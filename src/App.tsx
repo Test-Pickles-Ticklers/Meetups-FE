@@ -2,7 +2,7 @@ import { Button } from "./components/ui/Button";
 function App() {
   return (
     <>
-      <Button>Min första knapp</Button>
+      <Button bg="success">Min första knapp</Button>
     </>
   );
 }
