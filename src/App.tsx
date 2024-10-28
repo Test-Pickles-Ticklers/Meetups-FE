@@ -1,8 +1,11 @@
-import { Button } from "./components/ui/Button";
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/Routes';
+import PageLoader from './components/root/pageLoader/PageLoader';
+
 function App() {
   return (
     <>
-      <Button>Min första knapp</Button>
+      <RouterProvider router={router} fallbackElement={<PageLoader />} />
     </>
   );
 }
