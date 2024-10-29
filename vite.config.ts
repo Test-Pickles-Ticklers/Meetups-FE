@@ -5,7 +5,7 @@ import path from "path";
 const branch = process.env.VITE_BRANCH;
 
 export default defineConfig({
-  base: branch === "dev" ? "/your-repo-name/" : "/",
+  base: branch === "dev" ? "/Meetups-FE/" : "/",
   plugins: [react()],
   resolve: {
     alias: {
