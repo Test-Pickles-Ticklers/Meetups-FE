@@ -1,43 +1,44 @@
-import { Button, Divider, TextField } from "@mui/material";
+import { Button, Divider, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DialogModal from "../common/DialogModal";
 import { useState } from "react";
-import UserModel from "../../api/users/models/UserModel";
-import { loginUser } from "../../api/users/apiUserCalls";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import AuthenticationRequest from "../../api/auth/models/AuthenticationRequest";
+import { useUserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { setToken } = useLocalStorage();
+  const [errors, setErrors] = useState<string>("");
   const navigate = useNavigate();
+  const { login } = useUserContext();
+  const initialFormData: AuthenticationRequest = {
+    email: "",
+    password: "",
+  };
 
-  console.log("import.meta.env.VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
+  const [formData, setFormData] =
+    useState<AuthenticationRequest>(initialFormData);
 
   const handleSubmit = async () => {
-    const response = await loginUser(formData);
+    const success = await login(formData);
 
-    if (response?.status) {
-      setToken(response.data.token);
+    if (success) {
       navigate("/meetups");
       handleOpen();
+      setFormData(initialFormData);
+      setErrors("");
     }
+    if (!success) setErrors("Fel användarnamn eller lösenord.");
   };
+
   const handleCancel = () => {
-    console.log("initialFormData", initialFormData);
+    setErrors("");
     setFormData(initialFormData);
     handleOpen();
   };
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
-
-  const initialFormData: UserModel = {
-    email: "",
-    password: "",
-  };
-
-  const [formData, setFormData] = useState<UserModel>(initialFormData);
 
   return (
     <>
@@ -77,6 +78,7 @@ const Login = () => {
             }}
             value={formData.password}
           ></TextField>
+          <Typography color={"red"}>{errors}</Typography>
         </Grid>
       </DialogModal>
     </>

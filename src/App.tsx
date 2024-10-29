@@ -4,10 +4,12 @@ import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme/theme";
 import "typeface-roboto";
+import { UserProvider } from "./context/UserContext";
 import GlobalStyles from "@mui/material/GlobalStyles";
 
 function App() {
   return (
+    <UserProvider>
       <ThemeProvider theme={theme}>
         <GlobalStyles
           styles={{
@@ -25,10 +27,11 @@ function App() {
             },
           }}
         />
-      <SnackbarProvider maxSnack={4}>
-        <RouterProvider router={router} />
-      </SnackbarProvider>
-    </ThemeProvider>
+        <SnackbarProvider maxSnack={4}>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 

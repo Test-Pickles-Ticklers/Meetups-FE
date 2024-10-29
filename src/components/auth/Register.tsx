@@ -1,14 +1,22 @@
-import { Box, Button, Divider, Grid2, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid2,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import DialogModal from "../common/DialogModal";
-import UserModel from "../../api/users/models/UserModel";
-import { registerUser } from "../../api/users/apiUserCalls";
+import UserModel from "../../api/auth/models/AuthenticationRequest";
+import { useUserContext } from "../../context/UserContext";
 
 interface RegisterModel extends UserModel {
   confirmPassword: string;
 }
 
 const Register = () => {
+  const { register } = useUserContext();
   const initialFormData: RegisterModel = {
     email: "",
     password: "",
@@ -16,17 +24,21 @@ const Register = () => {
   };
   const [formData, setFormData] = useState<RegisterModel>(initialFormData);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string>("");
 
   const handleSubmit = async () => {
-    const data = await registerUser(formData as UserModel);
-    console.log("data", data);
-    handleOpen();
+    const success = await register(formData);
+
+    if (success) handleOpen();
+    if (!success) setErrors("Mailaddress verkar vara registrerad.");
   };
+
   const handleCancel = () => {
-    console.log("initialFormData", initialFormData);
     setFormData(initialFormData);
     handleOpen();
+    setErrors("");
   };
+
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -39,7 +51,10 @@ const Register = () => {
         marginBottom={2}
         marginTop={20}
       >
-        <Button onClick={handleOpen} variant="contained">
+        <Button
+          onClick={handleOpen}
+          variant="contained"
+        >
           Registrera dig
         </Button>
       </Box>
@@ -49,7 +64,12 @@ const Register = () => {
         handleCancel={handleCancel}
         title="Willk0mmen"
       >
-        <Grid2 container direction={"column"} gap={2} marginTop={2}>
+        <Grid2
+          container
+          direction={"column"}
+          gap={2}
+          marginTop={2}
+        >
           <Divider />
           <TextField
             label="Email"
@@ -84,6 +104,7 @@ const Register = () => {
             value={formData.confirmPassword}
           />
         </Grid2>
+        <Typography color="red">{errors}</Typography>
       </DialogModal>
     </>
   );
