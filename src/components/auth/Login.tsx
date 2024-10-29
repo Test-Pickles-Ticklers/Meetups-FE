@@ -13,6 +13,8 @@ const Login = () => {
   const { setToken } = useLocalStorage();
   const navigate = useNavigate();
 
+  console.log("import.meta.env.VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
+
   const handleSubmit = async () => {
     const response = await loginUser(formData);
 
