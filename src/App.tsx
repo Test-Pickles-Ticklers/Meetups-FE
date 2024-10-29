@@ -3,6 +3,7 @@ import router from "./routes/Routes";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme/theme";
+import "typeface-roboto";
 
 function App() {
   return (
