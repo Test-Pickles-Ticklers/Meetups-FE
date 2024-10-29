@@ -6,12 +6,13 @@ import UserModel from "../../api/users/models/UserModel";
 import { loginUser } from "../../api/users/apiUserCalls";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { enqueueSnackbar, useSnackbar } from "notistack";
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { setToken } = useLocalStorage();
   const navigate = useNavigate();
+
+  console.log("import.meta.env.VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
 
   const handleSubmit = async () => {
     const response = await loginUser(formData);
