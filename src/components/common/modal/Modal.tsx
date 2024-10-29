@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTrigger,
+  DialogActionTrigger,
 } from '../../ui/dialog';
 
 interface ModalProps {
@@ -13,17 +14,34 @@ interface ModalProps {
   title: string;
   onCancel: () => void;
   onSubmit: () => void;
-  openText: string;
+  openText?: string;
+  showTriggerButton?: boolean;
+  isOpen?: boolean;
 }
 
 const Modal = (props: ModalProps) => {
-  const { children, title, onCancel, onSubmit, openText } = props;
+  const {
+    children,
+    title,
+    onCancel,
+    onSubmit,
+    openText,
+    isOpen,
+    showTriggerButton = true,
+  } = props;
 
   return (
-    <DialogRoot closeOnInteractOutside motionPreset="slide-in-bottom">
-      <DialogTrigger asChild>
-        <Button bg="primary">{openText}</Button>
-      </DialogTrigger>
+    <DialogRoot
+      closeOnInteractOutside
+      motionPreset="slide-in-bottom"
+      open={isOpen}
+      onOpenChange={(open) => !open && onCancel()}
+    >
+      {showTriggerButton && (
+        <DialogTrigger>
+          <Button bg="primary">{openText}</Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>{title}</DialogHeader>
         <DialogBody>{children}</DialogBody>
@@ -31,10 +49,11 @@ const Modal = (props: ModalProps) => {
           <Button bg="success" variant="outline" onClick={onSubmit}>
             OK
           </Button>
-
-          <Button bg="error" variant="outline" onClick={onCancel}>
-            Avbryt
-          </Button>
+          <DialogActionTrigger>
+            <Button bg="error" variant="outline" onClick={onCancel}>
+              Avbryt
+            </Button>
+          </DialogActionTrigger>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
