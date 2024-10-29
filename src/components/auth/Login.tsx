@@ -3,7 +3,6 @@ import { Input } from '@chakra-ui/react';
 
 interface LoginProps {
   onCancel: () => void;
-  //   isOpen: boolean;
 }
 
 const Login = (props: LoginProps) => {
@@ -18,8 +17,18 @@ const Login = (props: LoginProps) => {
       onSubmit={handleSubmit}
       openText="Logga in"
     >
-      <Input placeholder="Användarnamn" variant="outline"></Input>
-      <Input placeholder="Lösenord" variant="outline"></Input>
+      <Input
+        type="text"
+        placeholder="Emailaddress"
+        variant="outline"
+        mb={2}
+      ></Input>
+      <Input
+        type="text"
+        placeholder="Lösenord"
+        variant="outline"
+        mb={2}
+      ></Input>
     </Modal>
   );
 };
