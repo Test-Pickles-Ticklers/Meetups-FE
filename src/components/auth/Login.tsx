@@ -12,14 +12,16 @@ const Login = () => {
   const { setToken } = useLocalStorage();
   const navigate = useNavigate();
 
+  console.log("import.meta.env.VITE_BASE_URL", import.meta.env.VITE_BASE_URL);
+
   const handleSubmit = async () => {
     const response = await loginUser(formData);
 
-    if (response) {
+    if (response?.status) {
       setToken(response.data.token);
       navigate("/meetups");
+      handleOpen();
     }
-    handleOpen();
   };
   const handleCancel = () => {
     console.log("initialFormData", initialFormData);
