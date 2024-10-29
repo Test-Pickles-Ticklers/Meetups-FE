@@ -1,4 +1,4 @@
-name: Deploy React/Vite App to S3 (Dev Branch Only)
+name: Deploy App to S3 (Dev Branch Only)
 
 on:
   push:
