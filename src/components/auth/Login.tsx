@@ -40,19 +40,20 @@ const Login = () => {
 
   return (
     <>
-      <Button onClick={handleOpen}>Logga in</Button>
+      <Button
+        onClick={handleOpen}
+        sx={{ height: "40%", width: "20" }}
+        variant="contained"
+      >
+        Logga in
+      </Button>
       <DialogModal
         isOpen={isOpen}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         title="Logga in här hörru"
       >
-        <Grid
-          container
-          direction={"column"}
-          gap={2}
-          marginTop={2}
-        >
+        <Grid container direction={"column"} gap={2} marginTop={2}>
           <Divider />
           <TextField
             label="Email"

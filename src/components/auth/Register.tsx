@@ -1,4 +1,4 @@
-import { Button, Divider, Grid2, TextField } from "@mui/material";
+import { Box, Button, Divider, Grid2, TextField } from "@mui/material";
 import { useState } from "react";
 import DialogModal from "../common/DialogModal";
 import UserModel from "../../api/users/models/UserModel";
@@ -33,19 +33,23 @@ const Register = () => {
 
   return (
     <>
-      <Button onClick={handleOpen}>Registrera dig</Button>
+      <Box
+        display="flex"
+        justifyContent="center"
+        marginBottom={2}
+        marginTop={20}
+      >
+        <Button onClick={handleOpen} variant="contained">
+          Registrera dig
+        </Button>
+      </Box>
       <DialogModal
         isOpen={isOpen}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         title="Willk0mmen"
       >
-        <Grid2
-          container
-          direction={"column"}
-          gap={2}
-          marginTop={2}
-        >
+        <Grid2 container direction={"column"} gap={2} marginTop={2}>
           <Divider />
           <TextField
             label="Email"
