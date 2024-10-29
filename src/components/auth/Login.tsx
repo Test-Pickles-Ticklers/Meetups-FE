@@ -6,6 +6,7 @@ import UserModel from "../../api/users/models/UserModel";
 import { loginUser } from "../../api/users/apiUserCalls";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
+import { enqueueSnackbar, useSnackbar } from "notistack";
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -15,11 +16,11 @@ const Login = () => {
   const handleSubmit = async () => {
     const response = await loginUser(formData);
 
-    if (response) {
+    if (response?.status) {
       setToken(response.data.token);
       navigate("/meetups");
+      handleOpen();
     }
-    handleOpen();
   };
   const handleCancel = () => {
     console.log("initialFormData", initialFormData);
