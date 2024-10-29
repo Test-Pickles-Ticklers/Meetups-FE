@@ -1,4 +1,4 @@
-name: Deploy React/Vite App to GitHub Pages (Dev Branch Only)
+name: Deploy App to S3 (Dev Branch Only)
 
 on:
   push:
@@ -19,18 +19,18 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm i
-
-      - name: Set VITE_BRANCH from Secrets
-        run: echo "VITE_BRANCH=${{ secrets.VITE_BRANCH }}" >> $GITHUB_ENV
+        run: npm install
 
       - name: Build project
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        if: github.ref_name == 'dev'
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
-          branch: gh-pages
-          folder: dist
-          clean: true
+          args: --follow-symlinks --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: "./dist"
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}

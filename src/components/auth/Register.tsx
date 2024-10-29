@@ -1,24 +1,25 @@
-import { Button, Divider, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import DialogModal from "../common/DialogModal";
+import { Button, Divider, Grid2, TextField } from "@mui/material";
 import { useState } from "react";
+import DialogModal from "../common/DialogModal";
 import UserModel from "../../api/users/models/UserModel";
-import { loginUser } from "../../api/users/apiUserCalls";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../api/users/apiUserCalls";
 
-const Login = () => {
+interface RegisterModel extends UserModel {
+  confirmPassword: string;
+}
+
+const Register = () => {
+  const initialFormData: RegisterModel = {
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+  const [formData, setFormData] = useState<RegisterModel>(initialFormData);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { setToken } = useLocalStorage();
-  const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const response = await loginUser(formData);
-
-    if (response) {
-      setToken(response.data.token);
-      navigate("/meetups");
-    }
+    const data = await registerUser(formData as UserModel);
+    console.log("data", data);
     handleOpen();
   };
   const handleCancel = () => {
@@ -30,23 +31,16 @@ const Login = () => {
     setIsOpen(!isOpen);
   };
 
-  const initialFormData: UserModel = {
-    email: "",
-    password: "",
-  };
-
-  const [formData, setFormData] = useState<UserModel>(initialFormData);
-
   return (
     <>
-      <Button onClick={handleOpen}>Logga in</Button>
+      <Button onClick={handleOpen}>Registrera dig</Button>
       <DialogModal
         isOpen={isOpen}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
-        title="Logga in här hörru"
+        title="Willk0mmen"
       >
-        <Grid
+        <Grid2
           container
           direction={"column"}
           gap={2}
@@ -62,7 +56,7 @@ const Login = () => {
               }));
             }}
             value={formData.email}
-          ></TextField>
+          />
           <TextField
             label="Lösenord"
             type={"password"}
@@ -73,11 +67,22 @@ const Login = () => {
               }));
             }}
             value={formData.password}
-          ></TextField>
-        </Grid>
+          />
+          <TextField
+            label="Bekräfta lösenord"
+            type={"password"}
+            onChange={(e: any) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                confirmPassword: e.target.value,
+              }));
+            }}
+            value={formData.confirmPassword}
+          />
+        </Grid2>
       </DialogModal>
     </>
   );
 };
 
-export default Login;
+export default Register;
