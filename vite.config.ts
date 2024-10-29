@@ -2,8 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// https://vite.dev/config/
+const branch = process.env.VITE_BRANCH;
+
 export default defineConfig({
+  base: branch === "dev" ? "/Meetups-FE/" : "/",
   plugins: [react()],
   resolve: {
     alias: {
