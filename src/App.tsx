@@ -1,11 +1,10 @@
-import { RouterProvider } from 'react-router-dom';
-import router from './routes/Routes';
-import PageLoader from './components/root/pageLoader/PageLoader';
+import { RouterProvider } from "react-router-dom";
+import router from "./routes/Routes";
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} fallbackElement={<PageLoader />} />
+      <RouterProvider router={router} />
     </>
   );
 }

@@ -1,22 +1,26 @@
-import { Box, Flex, Stack } from '@chakra-ui/react';
-import Login from '../../auth/Login';
-import { useState } from 'react';
+import { Box, Button } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import Login from "../../auth/Login";
+import { useState } from "react";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { loggedIn, removeToken } = useLocalStorage();
 
-  const toggleLoginModalOpen = () => {
-    setIsOpen(!isOpen);
+  const logout = () => {
+    removeToken();
   };
 
   return (
     <>
-      <Box w="100%" p="4">
-        <Flex justifyContent="flex-end">
-          <Stack>
-            <Login onCancel={toggleLoginModalOpen} />
-          </Stack>
-        </Flex>
+      <Box width="100%">
+        <Grid container>
+          <Grid size={10}></Grid>
+          <Grid size={2}>
+            {!loggedIn ? <Login /> : <Button onClick={logout}>Logga ut</Button>}
+          </Grid>
+        </Grid>
       </Box>
     </>
   );

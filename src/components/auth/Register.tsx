@@ -1,75 +1,87 @@
-import { Input } from '@chakra-ui/react';
+import { Button, Divider, Grid2, TextField } from "@mui/material";
+import { useState } from "react";
+import DialogModal from "../common/DialogModal";
+import UserModel from "../../api/users/models/UserModel";
+import { registerUser } from "../../api/users/apiUserCalls";
 
-import Modal from '../common/modal/Modal';
-import { useState } from 'react';
-
-interface RegisterProps {
-  onCancel: () => void;
-  isOpen: boolean;
-  showTriggerButton: boolean;
+interface RegisterModel extends UserModel {
+  confirmPassword: string;
 }
 
-const Register = (props: RegisterProps) => {
-  const { onCancel, isOpen, showTriggerButton } = props;
-
-  const [formData, setFormData] = useState({
-    name: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
+const Register = () => {
+  const initialFormData: RegisterModel = {
+    email: "",
+    password: "",
+    confirmPassword: "",
   };
+  const [formData, setFormData] = useState<RegisterModel>(initialFormData);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    if (formData.password !== formData.confirmPassword) {
-      alert('Lösenorden matchar inte dumhövve!');
-      return;
-    }
-    console.log(formData);
+  const handleSubmit = async () => {
+    const data = await registerUser(formData as UserModel);
+    console.log("data", data);
+    handleOpen();
+  };
+  const handleCancel = () => {
+    console.log("initialFormData", initialFormData);
+    setFormData(initialFormData);
+    handleOpen();
+  };
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
-    <Modal
-      title="Registrera nytt konto"
-      onCancel={onCancel}
-      onSubmit={handleSubmit}
-      isOpen={isOpen}
-      showTriggerButton={showTriggerButton}
-    >
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Användarnamn"
-          variant="outline"
-          mb={2}
-        />
-        <Input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Lösenord"
-          variant="outline"
-          mb={2}
-        />
-        <Input
-          type="password"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          placeholder="Repetera Lösenord"
-          variant="outline"
-          mb={2}
-        />
-      </form>
-    </Modal>
+    <>
+      <Button onClick={handleOpen}>Registrera dig</Button>
+      <DialogModal
+        isOpen={isOpen}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        title="Willk0mmen"
+      >
+        <Grid2
+          container
+          direction={"column"}
+          gap={2}
+          marginTop={2}
+        >
+          <Divider />
+          <TextField
+            label="Email"
+            onChange={(e: any) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                email: e.target.value,
+              }));
+            }}
+            value={formData.email}
+          />
+          <TextField
+            label="Lösenord"
+            type={"password"}
+            onChange={(e: any) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                password: e.target.value,
+              }));
+            }}
+            value={formData.password}
+          />
+          <TextField
+            label="Bekräfta lösenord"
+            type={"password"}
+            onChange={(e: any) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                confirmPassword: e.target.value,
+              }));
+            }}
+            value={formData.confirmPassword}
+          />
+        </Grid2>
+      </DialogModal>
+    </>
   );
 };
 
