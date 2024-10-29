@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set up environment variables
+        run: echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> $GITHUB_ENV
+
       - name: Build project
         run: npm run build
 
@@ -34,4 +37,3 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: "./dist"
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
