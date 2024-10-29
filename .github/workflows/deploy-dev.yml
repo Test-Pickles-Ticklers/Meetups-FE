@@ -22,7 +22,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       - name: Set VITE_BRANCH from Secrets
         run: echo "VITE_BRANCH=${{ secrets.VITE_BRANCH }}" >> $GITHUB_ENV
