@@ -6,7 +6,6 @@ import UserModel from "../../api/users/models/UserModel";
 import { loginUser } from "../../api/users/apiUserCalls";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { enqueueSnackbar, useSnackbar } from "notistack";
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
