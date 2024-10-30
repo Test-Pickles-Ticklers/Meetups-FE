@@ -8,8 +8,6 @@ import { Search } from "@mui/icons-material";
 const HomeView = () => {
   return (
     <>
-      <p>HomeView</p>
-      <Searchbar />
       <Register />
     </>
   );

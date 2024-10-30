@@ -16,13 +16,7 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return (
-    <Slide
-      direction="up"
-      ref={ref}
-      {...props}
-    />
-  );
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 interface DialogModalProps {
   isOpen: boolean;
@@ -51,18 +45,20 @@ const DialogModal: React.FC<DialogModalProps> = ({
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Grid2
+          container
           columnSpacing={4}
+          justifyContent="center"
           padding={2}
-          width={"100%"}
-          alignItems={"flex-end"}
+          width="100%"
         >
-          <Button onClick={handleCancel}>Avbryt</Button>
-          <Button
-            onClick={handleSubmit}
-            variant={"contained"}
-          >
-            Bekräfta
-          </Button>
+          <Grid2 item>
+            <Button onClick={handleCancel}>Avbryt</Button>
+          </Grid2>
+          <Grid2 item>
+            <Button onClick={handleSubmit} variant="contained">
+              Bekräfta
+            </Button>
+          </Grid2>
         </Grid2>
       </DialogActions>
     </Dialog>

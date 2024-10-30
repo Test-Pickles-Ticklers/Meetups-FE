@@ -1,29 +1,38 @@
-import { Button, Divider, TextField } from "@mui/material";
+import { Button, Divider, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DialogModal from "../common/DialogModal";
 import { useState } from "react";
-import UserModel from "../../api/users/models/UserModel";
-import { loginUser } from "../../api/users/apiUserCalls";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import AuthenticationRequest from "../../api/auth/models/AuthenticationRequest";
+import { useUserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { enqueueSnackbar, useSnackbar } from "notistack";
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { setToken } = useLocalStorage();
+  const [errors, setErrors] = useState<string>("");
   const navigate = useNavigate();
+  const { login } = useUserContext();
+  const initialFormData: AuthenticationRequest = {
+    email: "",
+    password: "",
+  };
+
+  const [formData, setFormData] =
+    useState<AuthenticationRequest>(initialFormData);
 
   const handleSubmit = async () => {
-    const response = await loginUser(formData);
+    const success = await login(formData);
 
-    if (response?.status) {
-      setToken(response.data.token);
+    if (success) {
       navigate("/meetups");
       handleOpen();
+      setFormData(initialFormData);
+      setErrors("");
     }
+    if (!success) setErrors("Fel användarnamn eller lösenord.");
   };
+
   const handleCancel = () => {
-    console.log("initialFormData", initialFormData);
+    setErrors("");
     setFormData(initialFormData);
     handleOpen();
   };
@@ -31,28 +40,22 @@ const Login = () => {
     setIsOpen(!isOpen);
   };
 
-  const initialFormData: UserModel = {
-    email: "",
-    password: "",
-  };
-
-  const [formData, setFormData] = useState<UserModel>(initialFormData);
-
   return (
     <>
-      <Button onClick={handleOpen}>Logga in</Button>
+      <Button
+        onClick={handleOpen}
+        sx={{ height: "40%", width: "20" }}
+        variant="contained"
+      >
+        Logga in
+      </Button>
       <DialogModal
         isOpen={isOpen}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         title="Logga in här hörru"
       >
-        <Grid
-          container
-          direction={"column"}
-          gap={2}
-          marginTop={2}
-        >
+        <Grid container direction={"column"} gap={2} marginTop={2}>
           <Divider />
           <TextField
             label="Email"
@@ -75,6 +78,7 @@ const Login = () => {
             }}
             value={formData.password}
           ></TextField>
+          <Typography color={"red"}>{errors}</Typography>
         </Grid>
       </DialogModal>
     </>
