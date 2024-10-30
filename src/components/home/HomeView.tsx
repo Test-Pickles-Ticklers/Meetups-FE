@@ -6,7 +6,6 @@ const HomeView = () => {
   return (
     <>
       <Register />
-      <Searchbar />
     </>
   );
 };
