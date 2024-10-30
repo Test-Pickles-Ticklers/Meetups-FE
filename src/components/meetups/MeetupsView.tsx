@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { getAllMeetups } from '../../api/meetups/apiMeetupCalls';
-import MeetupModel from '../../api/meetups/models/MeetupModel';
+import { useEffect, useState } from "react";
+import { getAllMeetups } from "../../api/meetups/apiMeetupCalls";
+import MeetupModel from "../../api/meetups/models/MeetupModel";
+import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
 
 const MeetupsView = () => {
   const [data, setData] = useState<MeetupModel[]>([]);
@@ -8,11 +9,11 @@ const MeetupsView = () => {
   const fetchData = async () => {
     try {
       const response = await getAllMeetups();
-      console.log('Meetups data:', response);
+      console.log("Meetups data:", response);
 
       setData(response);
     } catch (error: any) {
-      console.error('Error fetching meetups:', error.message || error);
+      console.error("Error fetching meetups:", error.message || error);
     }
   };
 
@@ -22,6 +23,7 @@ const MeetupsView = () => {
 
   return (
     <>
+      <AddMeetupModal />
       {data.length > 0 ? (
         data.map((meetup) => (
           <div key={meetup.id}>
@@ -30,7 +32,7 @@ const MeetupsView = () => {
             <p>Date: {meetup.date}</p>
             <p>Time: {meetup.time}</p>
             <p>Location: {meetup.location}</p>
-            <p>Participants: {meetup.participants.join(', ')}</p>
+            <p>Participants: {meetup.participants.join(", ")}</p>
           </div>
         ))
       ) : (
