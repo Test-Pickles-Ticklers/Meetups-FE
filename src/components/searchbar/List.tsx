@@ -9,7 +9,7 @@ import {
   Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import data from "./mockdata.json";
+import useMeetups from "../meetups/hooks/useMeetups";
 
 
 interface ListProps {
@@ -22,7 +22,10 @@ const style = {
 }
 
 function MeetupList(props: ListProps) {
-  const filteredData = data.filter((el) => {
+  const { meetups } = useMeetups();
+
+
+  const filteredData = meetups.length ? meetups.filter((el) => {
     if (props.input === "") {
       return el;
     } else {
@@ -31,20 +34,20 @@ function MeetupList(props: ListProps) {
         el.location.toLowerCase().includes(props.input)
       );
     }
-  });
+  }) : [];
 
   return (
 
     <List style={{ listStyleType: "none", padding: "0", margin: "0" }}>
         {filteredData.map((item) => (
-          <ListItem key={item.id}>
+          <ListItem key={item._id}>
             <Accordion sx={style}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel3-content"
                 id="panel3-header"
               >
-                <Typography variant="h2">{item.title}</Typography>
+                <Typography>{item.title}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>Organizer: {item.organizer}</Typography>
