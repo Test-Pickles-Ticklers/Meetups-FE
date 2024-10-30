@@ -1,4 +1,4 @@
-interface reviewModel {
+interface ReviewModel {
   meetupsId: string;
   reviewer: string;
   comment: string;

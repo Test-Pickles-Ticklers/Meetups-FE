@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [errors, setErrors] = useState<string>("");
-  const navigate = useNavigate();
   const { login } = useUserContext();
   const initialFormData: AuthenticationRequest = {
     email: "",
@@ -23,17 +22,16 @@ const Login = () => {
     const success = await login(formData);
 
     if (success) {
-      navigate("/meetups");
-      handleOpen();
       setFormData(initialFormData);
+      handleOpen();
       setErrors("");
     }
     if (!success) setErrors("Fel användarnamn eller lösenord.");
   };
 
   const handleCancel = () => {
-    setErrors("");
     setFormData(initialFormData);
+    setErrors("");
     handleOpen();
   };
   const handleOpen = () => {
@@ -55,7 +53,12 @@ const Login = () => {
         handleCancel={handleCancel}
         title="Logga in här hörru"
       >
-        <Grid container direction={"column"} gap={2} marginTop={2}>
+        <Grid
+          container
+          direction={"column"}
+          gap={2}
+          marginTop={2}
+        >
           <Divider />
           <TextField
             label="Email"

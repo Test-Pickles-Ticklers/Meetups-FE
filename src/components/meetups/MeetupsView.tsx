@@ -36,15 +36,14 @@ const MeetupsView = () => {
     <>
       <AddMeetupModal />
       {data.length > 0 ? (
-
         data.map((meetup) => {
           return (
             <div key={meetup._id}>
               <Card
                 sx={{
                   width: {
-                    xs: "90%", // Full width on extra-small screens
-                    sm: 850, // Fixed width on small screens and above
+                    xs: "90%",
+                    sm: 850,
                   },
                   margin: 1,
                   justifySelf: "center",
@@ -54,7 +53,11 @@ const MeetupsView = () => {
                 }}
               >
                 <CardContent sx={{ marginLeft: 1, marginRight: 1 }}>
-                  <Typography variant="h5" component="div" align="center">
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    align="center"
+                  >
                     {meetup.title}
                   </Typography>
                   <Box
@@ -68,7 +71,7 @@ const MeetupsView = () => {
                     <Typography>Organizer: {meetup.organizer}</Typography>
                     <Typography>
                       Participants: {meetup.participants.length} /{" "}
-                      {meetup.maxparticipants}
+                      {meetup.maxParticipants}
                     </Typography>
                     <Typography>Date: {meetup.date}</Typography>
                   </Box>
@@ -85,7 +88,10 @@ const MeetupsView = () => {
                         of the World listas 51 släkten med tillsammans 270 till
                         280 arter i familjen men systematiken är delvis oklar :)
                       </Typography>
-                      <Button variant="contained" sx={{ mt: 3 }}>
+                      <Button
+                        variant="contained"
+                        sx={{ mt: 3 }}
+                      >
                         Join Meetup
                       </Button>
                     </Box>
@@ -98,7 +104,10 @@ const MeetupsView = () => {
                     p: 0,
                   }}
                 >
-                  <Button size="small" onClick={() => toggleExpand(meetup._id)}>
+                  <Button
+                    size="small"
+                    onClick={() => toggleExpand(meetup._id)}
+                  >
                     {expandedMeetupId === meetup._id
                       ? "Show Less"
                       : "Learn More"}
