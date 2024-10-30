@@ -1,5 +1,5 @@
 interface MeetupModel {
-  id: string;
+  _id: string;
   title: string;
   organizer: string;
   date: string;
