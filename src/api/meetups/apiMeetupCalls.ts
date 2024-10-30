@@ -12,26 +12,39 @@ export const getAllMeetups = async (): Promise<MeetupModel[]> => {
   }
 };
 
-// export const getMeetupById = async (id: string) => {
-//   try {
-//     console.log('id', id);
-//     const response = await axiosInstance.get(`/meetup/${id}`);
-//     return response;
-//   } catch (e) {
-//     console.error(e);
-//   }
-// };
+export const getMeetupById = async (id: string): Promise<MeetupModel> => {
+  try {
+    console.log('id', id);
+    const response = await axiosInstance.get<MeetupModel>(`/meetups/${id}`);
+    console.log('Response:', response);
 
-// export const signupToMeetup = async (id: string, token: string) => {
-//   try {
-//     console.log('ID and token', id, token);
-//     const response = await axiosInstance.put(`/signup/${id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (e) {
-//     console.error(e);
-//   }
-// };
+    return response.data;
+  } catch (error: any) {
+    console.log('Error', error.message);
+    throw error;
+  }
+};
+
+export const signupToMeetup = async (
+  id: string,
+  token: string
+): Promise<MeetupModel> => {
+  try {
+    console.log('ID and token', id, token);
+    const response = await axiosInstance.put<MeetupModel>(
+      `/${id}/participate`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('Response:', response);
+
+    return response.data;
+  } catch (error: any) {
+    console.log('Error', error.message);
+    throw error;
+  }
+};
