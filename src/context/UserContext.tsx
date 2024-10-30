@@ -56,6 +56,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       const data: UserToken = {
         token: response.token,
       };
+      console.log("data", data);
       setUser(data);
       localStorage.setItem("token", data.token);
 
