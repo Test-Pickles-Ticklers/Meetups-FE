@@ -15,6 +15,15 @@ interface ListProps {
   input: string;
 }
 
+const CardStyle = {
+  margin: "auto",
+  justifySelf: "center",
+  marginTop: 3,
+  transition: "max-height 0.3s ease-in-out",
+  overflow: "hidden",
+  width: "80%",
+};
+
 function MeetupList(props: ListProps) {
   const [expandedMeetupId, setExpandedMeetupId] = useState<string | null>(null);
   const { meetups } = useMeetups();
@@ -40,19 +49,7 @@ function MeetupList(props: ListProps) {
     <List style={{ listStyleType: "none", padding: "0", margin: "0" }}>
       {filteredData.map((item) => (
         <ListItem key={item._id}>
-          <Card
-            sx={{
-              width: {
-                xs: "90%",
-                sm: 850,
-              },
-              margin: 1,
-              justifySelf: "center",
-              marginTop: 3,
-              transition: "max-height 0.3s ease-in-out",
-              overflow: "hidden",
-            }}
-          >
+          <Card sx={CardStyle}>
             <CardContent sx={{ marginLeft: 1, marginRight: 1 }}>
               <Typography variant="h5" component="div" align="center">
                 {item.title}
