@@ -1,7 +1,5 @@
-interface MeetupModel {
-  _id: string;
+interface UpdateMeetupRequest {
   title: string;
-  organizer: string;
   date: string;
   time: string;
   location: string;
@@ -9,4 +7,4 @@ interface MeetupModel {
   maxParticipants: number;
 }
 
-export default MeetupModel;
+export default UpdateMeetupRequest;

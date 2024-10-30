@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
 
 const MeetupsView = () => {
   const [data, setData] = useState<MeetupModel[]>([]);
@@ -16,6 +17,7 @@ const MeetupsView = () => {
     try {
       const response = await getAllMeetups();
       console.log("Meetups data:", response);
+
       setData(response);
     } catch (error: any) {
       console.error("Error fetching meetups:", error.message || error);
@@ -32,7 +34,9 @@ const MeetupsView = () => {
 
   return (
     <>
+      <AddMeetupModal />
       {data.length > 0 ? (
+
         data.map((meetup) => {
           return (
             <div key={meetup._id}>
