@@ -9,47 +9,49 @@ import AddMeetupModal from './addMeetupModal/AddMeetupModal';
 import { Grid2 } from '@mui/material';
 import MeetupCard from './meetupCard/MeetupCard';
 import { useUserContext } from '../../context/UserContext';
+import Searchbar from '../searchbar/Searchbar';
+import useMeetups from './hooks/useMeetups';
 
 const MeetupsView = () => {
-  const [data, setData] = useState<MeetupModel[]>([]);
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>('');
   const { user } = useUserContext();
+  const [inputText, setInputText] = useState('');
+  const { meetups, getMeetups } = useMeetups();
 
-  const fetchData = async () => {
-    try {
-      const response = await getAllMeetups();
-      console.log('Meetups data:', response);
-
-      setData(response);
-    } catch (error: any) {
-      console.error('Error fetching meetups:', error.message || error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const filteredData = meetups.length
+    ? meetups.filter((el) => {
+        if (inputText === '') {
+          return el;
+        } else {
+          return (
+            el.title.toLowerCase().includes(inputText) ||
+            el.location.toLowerCase().includes(inputText)
+          );
+        }
+      })
+    : [];
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? '' : id));
   };
 
   const handleJoinClick = async () => {
-    const data = await signupToMeetup(expandedMeetupId);
-    fetchData();
+    await signupToMeetup(expandedMeetupId);
+    getMeetups();
   };
 
   const handleUnattend = async () => {
-    const data = await unattendToMeetup(expandedMeetupId);
-    fetchData();
+    await unattendToMeetup(expandedMeetupId);
+    getMeetups();
   };
 
   return (
     <>
       <AddMeetupModal />
+      <Searchbar inputText={inputText} setInputText={setInputText} />
       <Grid2 container spacing={2} direction={'column'} alignItems={'center'}>
-        {data.length > 0 ? (
-          data.map((meetup) => {
+        {filteredData.length > 0 ? (
+          filteredData.map((meetup) => {
             return (
               <Grid2 size={6} p={1}>
                 <MeetupCard

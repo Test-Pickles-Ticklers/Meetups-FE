@@ -43,6 +43,7 @@ const useMeetups = () => {
     meetups,
     meetupAdded,
     getSingleMeetup,
+    getMeetups,
   };
 };
 
