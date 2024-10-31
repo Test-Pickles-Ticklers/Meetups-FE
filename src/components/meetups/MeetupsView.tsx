@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllMeetups } from "../../api/meetups/apiMeetupCalls";
 import MeetupModel from "../../api/meetups/models/MeetupModel";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
 import { Grid2 } from "@mui/material";
 import MeetupCard from "./meetupCard/MeetupCard";
@@ -18,7 +12,6 @@ const MeetupsView = () => {
   const fetchData = async () => {
     try {
       const response = await getAllMeetups();
-      console.log("Meetups data:", response);
 
       setData(response);
     } catch (error: any) {
@@ -51,6 +44,7 @@ const MeetupsView = () => {
               <Grid2
                 size={6}
                 p={1}
+                key={meetup._id}
               >
                 <MeetupCard
                   meetup={meetup}
