@@ -9,6 +9,7 @@ import {
   TimePicker,
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { enqueueSnackbar } from "notistack";
 
 const initialData: AddMeetupRequest = {
   title: "",
@@ -26,6 +27,7 @@ const AddMeetupModal = () => {
   const handleSubmit = async () => {
     await meetupAdded(formData);
     setOpen(!open);
+    enqueueSnackbar("Meetup added!", { variant: "info" });
   };
 
   const handleCancel = () => {
