@@ -11,12 +11,13 @@ import { enqueueSnackbar } from "notistack";
 import RegisterResponse from "../api/auth/models/RegisterResponse";
 import AuthenticationResponse from "../api/auth/models/AuthenticationResponse";
 
-interface UserToken {
+interface User {
   token: string;
+  email: string;
 }
 
 interface UserContextType {
-  user: UserToken | null;
+  user: User | null;
   login: (userData: AuthenticationRequest) => Promise<boolean>;
   logout: () => void;
   register: (userData: AuthenticationRequest) => Promise<boolean>;
@@ -27,12 +28,14 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<UserToken | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setUser({ token: storedToken });
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser({ ...parsedUser });
     }
   }, []);
 
@@ -53,12 +56,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     try {
       const response: AuthenticationResponse = await loginUser(userData);
       console.log("response", response);
-      const data: UserToken = {
+
+      const data: User = {
         token: response.token,
+        email: response.email,
       };
       console.log("data", data);
       setUser(data);
-      localStorage.setItem("token", data.token);
+
+      localStorage.setItem("user", JSON.stringify(data));
 
       return true;
     } catch (error) {
@@ -68,7 +74,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     enqueueSnackbar("Du har loggat ut", { variant: "info" });
   };
 
