@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import MeetupModel from '../../../api/meetups/models/MeetupModel';
 import {
+  addMeetup,
   getAllMeetups,
   getMeetupById,
 } from '../../../api/meetups/apiMeetupCalls';
 import AddMeetupRequest from '../../../api/meetups/models/AddMeetupRequest';
+import { enqueueSnackbar } from 'notistack';
 
 const useMeetups = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,12 +24,13 @@ const useMeetups = () => {
     return singleMeetup;
   };
 
-  const addMeetup = async (meetup: AddMeetupRequest) => {
-    getMeetups();
-  };
-
-  const updateMeetup = async () => {
-    getMeetups();
+  const meetupAdded = async (meetup: AddMeetupRequest) => {
+    try {
+      await addMeetup(meetup);
+      getMeetups();
+    } catch (error) {
+      enqueueSnackbar('Fel vid skapande av meetup', { variant: 'error' });
+    }
   };
 
   useEffect(() => {
@@ -35,12 +38,10 @@ const useMeetups = () => {
 
     getMeetups();
   }, []);
-
   return {
     isLoading,
     meetups,
-    addMeetup,
-    updateMeetup,
+    meetupAdded,
     getSingleMeetup,
   };
 };

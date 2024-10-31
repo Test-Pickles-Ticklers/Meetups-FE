@@ -3,6 +3,7 @@ import RootView from '../components/root/RootView';
 import HomeView from '../components/home/HomeView';
 import MeetupsView from '../components/meetups/MeetupsView';
 import ProtectedRoute from './ProtectedRoute';
+import UserView from '../components/user/UserView';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: 'meetups/:id',
         element: <ProtectedRoute element={<MeetupsView />} />,
+      },
+      {
+        path: 'user',
+        element: <ProtectedRoute element={<UserView />} />,
       },
     ],
   },
