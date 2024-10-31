@@ -21,7 +21,7 @@ const MeetupsView = () => {
   const { getMeetups, upcomingMeetups, historicMeetups, meetups } = useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
-  const filteredData = meetups
+  const filteredData = upcomingMeetups
   .filter((el) => {
     const textMatch =
       inputText === "" ||
