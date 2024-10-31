@@ -18,7 +18,7 @@ const MeetupsView = () => {
   const [date2, setDate2] = useState<Dayjs | null>(null);
   const { user } = useUserContext();
   const [inputText, setInputText] = useState("");
-  const { getMeetups, upcomingMeetups, historicMeetups } = useMeetups();
+  const { getMeetups, upcomingMeetups, historicMeetups, meetups } = useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
   const filteredData = meetups
