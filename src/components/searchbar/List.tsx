@@ -20,7 +20,6 @@ const CardStyle = {
   justifySelf: "center",
   marginTop: 3,
   transition: "max-height 0.3s ease-in-out",
-  overflow: "hidden",
   width: "80%",
 };
 
@@ -46,12 +45,12 @@ function MeetupList(props: ListProps) {
     : [];
 
   return (
-    <List style={{ listStyleType: "none", padding: "0", margin: "0" }}>
+    <List>
       {filteredData.map((item) => (
         <ListItem key={item._id}>
           <Card sx={CardStyle}>
             <CardContent sx={{ marginLeft: 1, marginRight: 1 }}>
-              <Typography variant="h5" component="div" align="center">
+              <Typography variant="h5" align="center">
                 {item.title}
               </Typography>
               <Box
@@ -62,7 +61,7 @@ function MeetupList(props: ListProps) {
                   mt: 1,
                 }}
               >
-                <Typography>Organizer: {item.organizer}</Typography>
+                <Typography >Organizer: {item.organizer}</Typography>
                 <Typography>
                   Participants: {item.participants.length} /{" "}
                   {item.maxParticipants}

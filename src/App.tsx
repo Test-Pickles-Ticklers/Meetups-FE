@@ -4,6 +4,7 @@ import "typeface-roboto";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import Provider from "./providers/Provider";
 
+
 function App() {
   return (
     <Provider>
@@ -13,13 +14,8 @@ function App() {
             margin: 0,
             padding: 0,
             background: "linear-gradient(to bottom, #4a90e2, #d9e9f2)",
+            backgroundRepeat: "no-repeat",
             height: "100vh",
-            overflow: "hidden",
-          },
-          html: {
-            margin: 0,
-            padding: 0,
-            height: "100%",
           },
         }}
       />

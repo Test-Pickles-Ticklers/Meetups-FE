@@ -21,6 +21,30 @@ const theme = createTheme({
       fontWeight: 400,
     },
   },
+
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: "black"
+        }
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "black",
+        },
+      }
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          background: "black",
+        }
+      }
+    },
+  }
 });
 
 export default theme;
