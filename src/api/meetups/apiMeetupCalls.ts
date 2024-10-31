@@ -1,6 +1,7 @@
 import axiosInstance from "../axiosInstance";
 import AddMeetupRequest from "./models/AddMeetupRequest";
 import MeetupModel from "../models/MeetupModel";
+import UpdateMeetupRequest from "./models/UpdateMeetupRequest";
 
 export const getAllMeetups = async (): Promise<MeetupModel[]> => {
   try {
@@ -13,9 +14,25 @@ export const getAllMeetups = async (): Promise<MeetupModel[]> => {
 
 export const addMeetup = async (meetup: AddMeetupRequest) => {
   try {
-    const response = await axiosInstance.post<MeetupModel>("/meetups", meetup);
-    return response.data;
+    await axiosInstance.post<MeetupModel>("/meetups", meetup);
+    return true;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const updateMeetup = async (
+  id: string,
+  meetup: UpdateMeetupRequest
+): Promise<MeetupModel> => {
+  try {
+    const response = await axiosInstance.put<MeetupModel>(
+      `/meetups/${id}`,
+      meetup
+    );
+
+    return response.data;
+  } catch (error: any) {
     throw error;
   }
 };

@@ -10,139 +10,67 @@ import {
 } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
-
-const initialData: AddMeetupRequest = {
-  title: "",
-  date: "",
-  time: "",
-  location: "",
-  maxParticipants: 10,
-  category: "",
-};
+import DetailedMeetupCard, {
+  EditMeetupModel,
+} from "../detailedMeetupCard/DetailedMeetupCard";
+import MeetupModel from "../../../api/models/MeetupModel";
+import { useUserContext } from "../../../context/UserContext";
 
 const AddMeetupModal = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { meetupAdded } = useMeetups();
-  const [formData, setFormData] = useState<AddMeetupRequest>(initialData);
+  const { user } = useUserContext();
+  const [editMeetup, setEditMeetup] = useState<EditMeetupModel>();
 
   const handleSubmit = async () => {
-    await meetupAdded(formData);
-    setOpen(!open);
-    enqueueSnackbar("Meetup added!", { variant: "info" });
+    const success = await meetupAdded(editMeetup!.meetup as AddMeetupRequest);
+
+    if (success) {
+      setOpen(!open);
+      enqueueSnackbar("Meetup added!", { variant: "info" });
+    }
   };
 
   const handleCancel = () => {
-    setFormData(initialData);
+    setEditMeetup(undefined);
     setOpen(!open);
+  };
+
+  const initialData: MeetupModel = {
+    _id: "",
+    title: "",
+    date: "",
+    time: "",
+    location: "",
+    maxParticipants: 10,
+    category: "",
+    description: "",
+    organizer: user!.email,
+    participants: [],
+  };
+
+  const onOpenClick = () => {
+    setEditMeetup({ isNew: true, meetup: initialData });
+    setOpen(true);
   };
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Lägg till meetup</Button>
+      <Button onClick={onOpenClick}>Lägg till meetup</Button>
       <DialogModal
         isOpen={open}
         title={"Lägg till ny meetup"}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
       >
-        <Grid2
-          p={2}
-          container
-          spacing={1}
-          justifyContent={"flex-start"}
-        >
-          <Grid2 size={6}>
-            <TextField
-              required
-              fullWidth
-              value={formData.title ?? ""}
-              type="text"
-              label="Titel"
-              onChange={(e: any) => {
-                setFormData((prevState) => ({
-                  ...prevState,
-                  title: e.target.value,
-                }));
-              }}
-            />
-          </Grid2>
-          <Grid2 size={6}>
-            <TextField
-              required
-              fullWidth
-              value={formData.location ?? ""}
-              type="text"
-              label="Plats"
-              onChange={(e: any) => {
-                setFormData((prevState) => ({
-                  ...prevState,
-                  location: e.target.value,
-                }));
-              }}
-            />
-          </Grid2>
-          <Grid2 size={6}>
-            <TextField
-              required
-              fullWidth
-              value={formData.maxParticipants ?? undefined}
-              type="number"
-              label="Max deltagare"
-              onChange={(e: any) => {
-                setFormData((prevState) => ({
-                  ...prevState,
-                  maxParticipants: e.target.value,
-                }));
-              }}
-            />
-          </Grid2>
-          <Grid2 size={6}>
-            <DatePicker
-              openTo={"year"}
-              label="Datum"
-              value={formData.date ? dayjs(formData.date, "YYYY-MM-DD") : null}
-              // disablePast
-              views={["year", "month", "day"]}
-              onChange={(value) => {
-                const date = dayjs(value).format("YYYY-MM-DD");
-                setFormData((prevState) => ({
-                  ...prevState,
-                  date: date,
-                }));
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  required: true,
-                },
-              }}
-            />
-          </Grid2>
-          <Grid2 size={6}>
-            <TimePicker
-              label="Tid"
-              value={formData.time ? dayjs(formData.time, "HH:mm") : null}
-              onChange={(value) => {
-                const time = dayjs(value).format("HH:mm");
-                setFormData((prevState) => ({
-                  ...prevState,
-                  time: time,
-                }));
-              }}
-              ampm={false}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  required: true,
-                },
-              }}
-              viewRenderers={{
-                hours: renderTimeViewClock,
-                minutes: renderTimeViewClock,
-              }}
-            />
-          </Grid2>
-        </Grid2>
+        <DetailedMeetupCard
+          meetup={initialData}
+          editMeetup={editMeetup}
+          setEditMeetup={setEditMeetup}
+          isEdit={true}
+          handleEditClick={onOpenClick}
+          handleCancelClick={handleCancel}
+        />
       </DialogModal>
     </>
   );

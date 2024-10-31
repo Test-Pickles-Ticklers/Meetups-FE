@@ -8,6 +8,8 @@ interface MeetupModel {
   participants: string[];
   maxParticipants: number;
   category: string;
+  description: string;
+  category: string;
 }
 
 export default MeetupModel;

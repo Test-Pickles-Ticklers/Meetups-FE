@@ -42,8 +42,10 @@ const useMeetups = () => {
 
   const meetupAdded = async (meetup: AddMeetupRequest) => {
     try {
-      await addMeetup(meetup);
+      const success = await addMeetup(meetup);
       await getMeetups();
+
+      return success;
     } catch (error) {
       enqueueSnackbar("Fel vid skapande av meetup", { variant: "error" });
     }
