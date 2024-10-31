@@ -17,6 +17,7 @@ const MeetupsView = () => {
   const { user } = useUserContext();
   const [inputText, setInputText] = useState("");
   const { meetups, getMeetups } = useMeetups();
+  const [category, setCategory] = useState<string>("");
 
   const filteredData = meetups
     .filter((el) => {
@@ -67,6 +68,8 @@ const MeetupsView = () => {
         setInputText={setInputText}
         date={date}
         setDate={setDate}
+        category={category}
+        setCategory={setCategory}
       />
       <Grid2
         container
