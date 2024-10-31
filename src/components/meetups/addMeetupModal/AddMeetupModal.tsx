@@ -100,7 +100,7 @@ const AddMeetupModal = () => {
               openTo={"year"}
               label="Datum"
               value={formData.date ? dayjs(formData.date, "YYYY-MM-DD") : null}
-              disablePast
+              // disablePast
               views={["year", "month", "day"]}
               onChange={(value) => {
                 const date = dayjs(value).format("YYYY-MM-DD");
