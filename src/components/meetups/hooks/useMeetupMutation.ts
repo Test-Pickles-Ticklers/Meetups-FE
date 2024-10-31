@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
 import {
   getMeetupById,
-  signupToMeetup,
+  updateMeetup,
 } from "../../../api/meetups/apiMeetupCalls";
 import MeetupModel from "../../../api/models/MeetupModel";
+import UpdateMeetupRequest from "../../../api/meetups/models/UpdateMeetupRequest";
+import { enqueueSnackbar } from "notistack";
 
-const useMeetupMutation = (id: string) => {
+const useMeetup = (id: string) => {
   const [meetup, setMeetup] = useState<MeetupModel>();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const updateMeetup = async () => {};
+  const meetupUpdated = async (
+    meetup: UpdateMeetupRequest
+  ): Promise<boolean> => {
+    try {
+      await updateMeetup(id, meetup);
+      getMeetup();
+      return true;
+    } catch (error) {
+      enqueueSnackbar("Något gick fel vid uppdatering av meetup", {
+        variant: "error",
+      });
+      return false;
+    }
+  };
 
   const getMeetup = async () => {
     const data = await getMeetupById(id);
@@ -23,7 +38,7 @@ const useMeetupMutation = (id: string) => {
     getMeetup();
   }, []);
 
-  return { meetup, isLoading, updateMeetup };
+  return { meetup, isLoading, meetupUpdated };
 };
 
-export default useMeetupMutation;
+export default useMeetup;

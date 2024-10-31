@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import MeetupModel from "../../../api/models/MeetupModel";
 import {
   Card,
@@ -33,6 +34,7 @@ const MeetupCard = ({
   canPutReview,
   handleReviewClick,
 }: MeetupCardProps) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   return (
     <Card key={meetup._id}>
@@ -55,7 +57,7 @@ const MeetupCard = ({
           </Typography>
           <Typography>Date: {meetup.date}</Typography>
         </Grid2>
-        {expandedId === meetup._id && (
+        {/* {expandedId === meetup._id && (
           <Box sx={{ mt: 2 }}>
             <Typography
               variant="body2"
@@ -85,14 +87,14 @@ const MeetupCard = ({
               </Button>
             )}
           </Box>
-        )}
+        )} */}
       </CardContent>
       <CardActions>
         <Button
           size="small"
-          onClick={() => toggleExpand(meetup._id)}
+          onClick={() => navigate(`/meetups/${meetup._id}`)}
         >
-          {expandedId === meetup._id ? "Visa mindre" : "Visa mer"}
+          Gå till meetup
         </Button>
       </CardActions>
     </Card>

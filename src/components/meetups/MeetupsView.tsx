@@ -4,7 +4,7 @@ import {
   unattendToMeetup,
 } from "../../api/meetups/apiMeetupCalls";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
-import { Box, Grid2, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { useUserContext } from "../../context/UserContext";
 import useMeetups from "./hooks/useMeetups";
 import dayjs, { Dayjs } from "dayjs";

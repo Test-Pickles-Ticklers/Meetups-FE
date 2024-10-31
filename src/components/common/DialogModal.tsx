@@ -53,13 +53,10 @@ const DialogModal: React.FC<DialogModalProps> = ({
         <Grid2
           container
           columnSpacing={4}
-          justifyContent="center"
+          justifyContent="flex-end"
           padding={2}
           width="100%"
         >
-          <Grid2>
-            <Button onClick={handleCancel}>Avbryt</Button>
-          </Grid2>
           <Grid2>
             <Button
               onClick={handleSubmit}
@@ -67,6 +64,9 @@ const DialogModal: React.FC<DialogModalProps> = ({
             >
               Bekräfta
             </Button>
+          </Grid2>
+          <Grid2>
+            <Button onClick={handleCancel}>Avbryt</Button>
           </Grid2>
         </Grid2>
       </DialogActions>

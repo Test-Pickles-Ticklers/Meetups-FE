@@ -6,7 +6,7 @@ const RootView = () => {
   return (
     <>
       <Navbar />
-      <Box sx={{ paddingTop: "6rem" }}>
+      <Box>
         <Outlet />
       </Box>
     </>
