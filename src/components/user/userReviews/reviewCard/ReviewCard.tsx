@@ -1,12 +1,6 @@
 import React from "react";
 import ReviewModel from "../../../../api/models/ReviewModel";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid2,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Grid2, Typography } from "@mui/material";
 import dayjs from "dayjs";
 
 interface ReviewCardProps {

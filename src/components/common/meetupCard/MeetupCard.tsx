@@ -12,7 +12,7 @@ import {
 
 interface MeetupCardProps {
   meetup: MeetupModel;
-  handleButtonClick: () => void;
+  handleButtonClick?: () => void;
   expandedId: string;
   toggleExpand: (id: string) => void;
   isParticipant: boolean;
@@ -63,10 +63,11 @@ const MeetupCard = ({
             >
               bajskuk
             </Typography>
-            {canPutReview && handleReviewClick ? (
+            {canPutReview != undefined && handleReviewClick ? (
               <Button
                 onClick={handleReviewClick}
                 variant="contained"
+                disabled={!canPutReview}
               >
                 Recensera
               </Button>

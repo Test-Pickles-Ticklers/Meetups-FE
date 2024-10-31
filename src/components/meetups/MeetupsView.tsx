@@ -4,7 +4,7 @@ import {
   unattendToMeetup,
 } from "../../api/meetups/apiMeetupCalls";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
-import { Grid2, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import { useUserContext } from "../../context/UserContext";
 import useMeetups from "./hooks/useMeetups";
 import dayjs, { Dayjs } from "dayjs";
@@ -18,7 +18,7 @@ const MeetupsView = () => {
   const [date2, setDate2] = useState<Dayjs | null>(null);
   const { user } = useUserContext();
   const [inputText, setInputText] = useState("");
-  const { meetups, getMeetups } = useMeetups();
+  const { getMeetups, upcomingMeetups, historicMeetups } = useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
   const filteredData = meetups
@@ -64,68 +64,99 @@ const displayedMeetups = inputText || filteredData;
     setReviewModalOpen(!reviewModalOpen);
   };
 
-  const currentDate = dayjs();
-
   return (
-    <>
+    <Grid2 p={2}>
       <AddMeetupModal />
-      <Searchbar
-        inputText={inputText}
-        setInputText={setInputText}
-        date1={date1}
-        setDate1={setDate1}
-        date2={date2}
-        setDate2={setDate2}
-      />
       <Grid2
         container
-        spacing={2}
-        direction={"column"}
-        alignItems={"center"}
+        direction="row"
       >
-        {displayedMeetups.length > 0 ? (
-          displayedMeetups.map((meetup) => (
-            <Grid2
-              size={6}
-              p={1}
-            >
-              <MeetupCard
-                joinButtonDisabled={
-                  user == null ||
-                  user.email == meetup.organizer ||
-                  currentDate.isAfter(meetup.date)
-                }
-                isParticipant={
-                  user != null && meetup.participants.includes(user.email)
-                }
-                meetup={meetup}
-                handleButtonClick={
-                  user && meetup.participants.includes(user.email)
-                    ? handleUnattend
-                    : handleJoinClick
-                }
-                expandedId={expandedMeetupId}
-                toggleExpand={(id: string) => toggleExpand(id)}
-                canPutReview={
-                  user
-                    ? meetup.participants.includes(user.email) &&
-                      currentDate.isAfter(meetup.date)
-                    : false
-                }
-                handleReviewClick={handleReviewClick}
-              />
-            </Grid2>
-          ))
-        ) : (
-          <Typography>No meetups found.</Typography>
-        )}
+        <Grid2 size={5}>
+          <Searchbar
+            inputText={inputText}
+            setInputText={setInputText}
+            date1={date1}
+        setDate1={setDate1}
+        date2={date2}
+            setDate2={setDate2}
+          />
+          <Grid2
+            container
+            spacing={2}
+            direction={"column"}
+            alignItems={"center"}
+          >
+            <Typography>Kommande meetups</Typography>
+            {displayedMeetups.length > 0 ? (
+              displayedMeetups.map((meetup) => (
+                <Grid2
+                  size={12}
+                  p={1}
+                >
+                  <MeetupCard
+                    joinButtonDisabled={
+                      user == null || user.email == meetup.organizer
+                    }
+                    isParticipant={
+                      user != null && meetup.participants.includes(user.email)
+                    }
+                    meetup={meetup}
+                    handleButtonClick={
+                      user && meetup.participants.includes(user.email)
+                        ? handleUnattend
+                        : handleJoinClick
+                    }
+                    expandedId={expandedMeetupId}
+                    toggleExpand={(id: string) => toggleExpand(id)}
+                  />
+                </Grid2>
+              ))
+            ) : (
+              <Typography>Inga kommande meetups.</Typography>
+            )}
+          </Grid2>
+        </Grid2>
+        <Grid2 size={5}>
+          <Grid2
+            container
+            spacing={2}
+            direction={"column"}
+            alignItems={"center"}
+          >
+            <Typography>Gamla meetups</Typography>
+            {historicMeetups.length > 0 ? (
+              historicMeetups.map((meetup) => (
+                <Grid2
+                  size={12}
+                  p={1}
+                >
+                  <MeetupCard
+                    joinButtonDisabled={true}
+                    isParticipant={
+                      user != null && meetup.participants.includes(user.email)
+                    }
+                    meetup={meetup}
+                    expandedId={expandedMeetupId}
+                    toggleExpand={(id: string) => toggleExpand(id)}
+                    canPutReview={
+                      user != null && meetup.participants.includes(user.email)
+                    }
+                    handleReviewClick={handleReviewClick}
+                  />
+                </Grid2>
+              ))
+            ) : (
+              <Typography>Inga gamla meetups.</Typography>
+            )}
+          </Grid2>
+        </Grid2>
       </Grid2>
       <ReviewModal
         open={reviewModalOpen}
         setOpen={setReviewModalOpen}
         meetupsId={expandedMeetupId}
       />
-    </>
+    </Grid2>
   );
 };
 
