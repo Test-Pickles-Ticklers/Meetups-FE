@@ -8,10 +8,12 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
+import { Grid2 } from "@mui/material";
+import MeetupCard from "./meetupCard/MeetupCard";
 
 const MeetupsView = () => {
   const [data, setData] = useState<MeetupModel[]>([]);
-  const [expandedMeetupId, setExpandedMeetupId] = useState<string | null>(null);
+  const [expandedMeetupId, setExpandedMeetupId] = useState<string>("");
 
   const fetchData = async () => {
     try {
@@ -29,97 +31,40 @@ const MeetupsView = () => {
   }, []);
 
   const toggleExpand = (id: string) => {
-    setExpandedMeetupId((prevId) => (prevId === id ? null : id));
+    setExpandedMeetupId((prevId) => (prevId === id ? "" : id));
   };
+
+  const handleJoin = () => {};
 
   return (
     <>
       <AddMeetupModal />
-      {data.length > 0 ? (
-        data.map((meetup) => {
-          return (
-            <div key={meetup._id}>
-              <Card
-                sx={{
-                  width: {
-                    xs: "90%",
-                    sm: 850,
-                  },
-                  margin: 1,
-                  justifySelf: "center",
-                  marginTop: 3,
-                  transition: "max-height 0.3s ease-in-out",
-                  overflow: "hidden",
-                }}
+      <Grid2
+        container
+        spacing={2}
+        direction={"column"}
+        alignItems={"center"}
+      >
+        {data.length > 0 ? (
+          data.map((meetup) => {
+            return (
+              <Grid2
+                size={6}
+                p={1}
               >
-                <CardContent sx={{ marginLeft: 1, marginRight: 1 }}>
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    align="center"
-                  >
-                    {meetup.title}
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      color: "text.secondary",
-                      mt: 1,
-                    }}
-                  >
-                    <Typography>Organizer: {meetup.organizer}</Typography>
-                    <Typography>
-                      Participants: {meetup.participants.length} /{" "}
-                      {meetup.maxParticipants}
-                    </Typography>
-                    <Typography>Date: {meetup.date}</Typography>
-                  </Box>
-                  {expandedMeetupId === meetup._id && (
-                    <Box sx={{ mt: 2 }}>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                      >
-                        Description: Ekorrfamiljen, är en stor familj bland
-                        gnagarna. Den finns representerad på alla kontinenter
-                        utom Australien, Nya Guinea, Madagaskar och Antarktis.
-                        Dessutom saknas de i vissa öknar. Enligt Mammal Species
-                        of the World listas 51 släkten med tillsammans 270 till
-                        280 arter i familjen men systematiken är delvis oklar :)
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        sx={{ mt: 3 }}
-                      >
-                        Join Meetup
-                      </Button>
-                    </Box>
-                  )}
-                </CardContent>
-                <CardActions
-                  sx={{
-                    ml: 2.5,
-                    mr: 1,
-                    p: 0,
-                  }}
-                >
-                  <Button
-                    size="small"
-                    onClick={() => toggleExpand(meetup._id)}
-                  >
-                    {expandedMeetupId === meetup._id
-                      ? "Show Less"
-                      : "Learn More"}
-                  </Button>
-                </CardActions>
-              </Card>
-            </div>
-          );
-        })
-      ) : (
-        <p>No meetups found.</p>
-      )}
+                <MeetupCard
+                  meetup={meetup}
+                  handleJoinClick={handleJoin}
+                  expandedId={expandedMeetupId}
+                  toggleExpand={(id: string) => toggleExpand(id)}
+                />
+              </Grid2>
+            );
+          })
+        ) : (
+          <p>No meetups found.</p>
+        )}
+      </Grid2>
     </>
   );
 };

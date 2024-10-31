@@ -1,9 +1,8 @@
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ThemeProvider } from "styled-components";
 import { UserProvider } from "../context/UserContext";
-import theme from "../theme/theme";
 import { SnackbarProvider } from "notistack";
+import ThemeCustomization from "../themes/themeCustomization";
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -13,9 +12,9 @@ const Provider = ({ children }: ProviderProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <UserProvider>
-        <ThemeProvider theme={theme}>
+        <ThemeCustomization>
           <SnackbarProvider maxSnack={4}>{children}</SnackbarProvider>
-        </ThemeProvider>
+        </ThemeCustomization>
       </UserProvider>
     </LocalizationProvider>
   );

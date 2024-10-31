@@ -1,10 +1,11 @@
 import { AppBar, Box, Button, Grid2, Tab, Tabs, useTheme } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import Login from "../../auth/Login";
-import HomeIcon from "@mui/icons-material/Home";
 import { useUserContext } from "../../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useContext } from "react";
+import ContrastIcon from "@mui/icons-material/Contrast";
+import { ThemeMode } from "../../../themes/types/theme";
+import { ThemeContext } from "../../../themes/themeCustomization";
 
 const Navbar = () => {
   const { user, logout } = useUserContext();
@@ -17,10 +18,14 @@ const Navbar = () => {
     setSelectedTab(newValue);
     navigate(newValue === "meetups" ? "/meetups" : "/user");
   };
+  const themeMode = useContext(ThemeContext);
+  const toggleThemeMode = () => {
+    themeMode.toggleThemeMode();
+  };
 
   return (
     <AppBar
-      sx={{ bgcolor: theme.palette.primary.light }}
+      sx={{ bgcolor: theme.palette.background.paper }}
       position="fixed"
     >
       <Grid2
@@ -28,11 +33,9 @@ const Navbar = () => {
         height="6rem"
         alignItems="center"
         justifyContent="space-between"
+        padding={2}
       >
-        <Box
-          sx={{ flexGrow: 1 }}
-          paddingLeft={2}
-        >
+        <Box sx={{ flexGrow: 1 }}>
           {user ? (
             <Tabs
               value={selectedTab}
@@ -53,10 +56,14 @@ const Navbar = () => {
         </Box>
         <Grid2
           container
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ mr: 2 }}
+          spacing={1}
         >
+          <Button
+            variant="text"
+            onClick={toggleThemeMode}
+          >
+            <ContrastIcon />
+          </Button>
           {!user ? (
             <Login />
           ) : (
