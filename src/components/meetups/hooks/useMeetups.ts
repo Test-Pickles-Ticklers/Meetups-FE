@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
-import MeetupModel from "../../../api/meetups/models/MeetupModel";
-import { addMeetup, getAllMeetups } from "../../../api/meetups/apiMeetupCalls";
-import AddMeetupRequest from "../../../api/meetups/models/AddMeetupRequest";
-import { enqueueSnackbar } from "notistack";
+import { useEffect, useState } from 'react';
+import MeetupModel from '../../../api/meetups/models/MeetupModel';
+import {
+  addMeetup,
+  getAllMeetups,
+  getMeetupById,
+} from '../../../api/meetups/apiMeetupCalls';
+import AddMeetupRequest from '../../../api/meetups/models/AddMeetupRequest';
+import { enqueueSnackbar } from 'notistack';
 
 const useMeetups = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -15,12 +19,17 @@ const useMeetups = () => {
     setIsLoading(false);
   };
 
+  const getSingleMeetup = async (id: string) => {
+    const singleMeetup = await getMeetupById(id);
+    return singleMeetup;
+  };
+
   const meetupAdded = async (meetup: AddMeetupRequest) => {
     try {
       await addMeetup(meetup);
       getMeetups();
     } catch (error) {
-      enqueueSnackbar("Fel vid skapande av meetup", { variant: "error" });
+      enqueueSnackbar('Fel vid skapande av meetup', { variant: 'error' });
     }
   };
 
@@ -33,6 +42,8 @@ const useMeetups = () => {
     isLoading,
     meetups,
     meetupAdded,
+    getSingleMeetup,
+    getMeetups,
   };
 };
 

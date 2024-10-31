@@ -1,5 +1,5 @@
-import React from "react";
-import MeetupModel from "../../../api/meetups/models/MeetupModel";
+import React from 'react';
+import MeetupModel from '../../../api/meetups/models/MeetupModel';
 import {
   Card,
   CardContent,
@@ -9,16 +9,20 @@ import {
   CardActions,
   Grid2,
   useTheme,
-} from "@mui/material";
+} from '@mui/material';
 
 interface MeetupCardProps {
   meetup: MeetupModel;
   handleJoinClick: () => void;
   expandedId: string;
   toggleExpand: (id: string) => void;
+  isParticipant: boolean;
+  joinButtonDisabled: boolean;
 }
 
 const MeetupCard = ({
+  joinButtonDisabled,
+  isParticipant,
   meetup,
   handleJoinClick,
   expandedId,
@@ -28,31 +32,24 @@ const MeetupCard = ({
   return (
     <Card key={meetup._id}>
       <CardContent>
-        <Typography
-          variant="h5"
-          component="div"
-          align="center"
-        >
+        <Typography variant="h5" component="div" align="center">
           {meetup.title}
         </Typography>
         <Grid2
           container
-          justifyContent={"space-between"}
+          justifyContent={'space-between'}
           color={theme.palette.text.secondary}
         >
           <Typography>Organizer: {meetup.organizer}</Typography>
           <Typography>
-            Participants: {meetup.participants.length} /{" "}
+            Participants: {meetup.participants.length} /{' '}
             {meetup.maxParticipants}
           </Typography>
           <Typography>Date: {meetup.date}</Typography>
         </Grid2>
         {expandedId === meetup._id && (
           <Box sx={{ mt: 2 }}>
-            <Typography
-              variant="body2"
-              color={theme.palette.text.secondary}
-            >
+            <Typography variant="body2" color={theme.palette.text.secondary}>
               Description: Ekorrfamiljen, är en stor familj bland gnagarna. Den
               finns representerad på alla kontinenter utom Australien, Nya
               Guinea, Madagaskar och Antarktis. Dessutom saknas de i vissa
@@ -61,10 +58,11 @@ const MeetupCard = ({
               delvis oklar :)
             </Typography>
             <Button
-              variant="contained"
               onClick={handleJoinClick}
+              disabled={joinButtonDisabled}
+              variant="contained"
             >
-              Join Meetup
+              {isParticipant ? 'Avanmäl' : 'Gå med'}
             </Button>
           </Box>
         )}
@@ -77,11 +75,8 @@ const MeetupCard = ({
       //   p: 0,
       // }}
       >
-        <Button
-          size="small"
-          onClick={() => toggleExpand(meetup._id)}
-        >
-          {expandedId === meetup._id ? "Show Less" : "Learn More"}
+        <Button size="small" onClick={() => toggleExpand(meetup._id)}>
+          {expandedId === meetup._id ? 'Show Less' : 'Learn More'}
         </Button>
       </CardActions>
     </Card>
