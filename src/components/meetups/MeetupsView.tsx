@@ -14,38 +14,37 @@ import ReviewModal from "./reviewModal/ReviewModal";
 
 const MeetupsView = () => {
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>("");
-  const [date, setDate] = useState<Dayjs | null>(null);
+  const [date1, setDate1] = useState<Dayjs | null>(null);
+  const [date2, setDate2] = useState<Dayjs | null>(null);
   const { user } = useUserContext();
   const [inputText, setInputText] = useState("");
   const { meetups, getMeetups } = useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
   const filteredData = meetups
-    .filter((el) => {
-      return (
-        inputText === "" ||
-        el.title.toLowerCase().includes(inputText) ||
-        el.location.toLowerCase().includes(inputText)
-      );
-    })
-    .map((el) => ({
-      ...el,
-      dateObj: dayjs(el.date),
-    }))
-    .filter((el) => {
-      if (!date) return true;
-      const diffInDays = Math.abs(el.dateObj.diff(date, "day"));
-      return diffInDays <= 30;
-    })
-    .sort((a, b) => {
-      if (!date) return 0;
-      const aDiff = Math.abs(a.dateObj.diff(date));
-      const bDiff = Math.abs(b.dateObj.diff(date));
-      return aDiff - bDiff;
-    });
+  .filter((el) => {
+    const textMatch =
+      inputText === "" ||
+      el.title.toLowerCase().includes(inputText.toLowerCase()) ||
+      el.location.toLowerCase().includes(inputText.toLowerCase());
 
-  const displayedMeetups =
-    inputText || date ? filteredData.slice(0, 10) : filteredData;
+    return textMatch;
+  })
+  .map((el) => ({
+    ...el,
+    dateObj: dayjs(el.date), 
+  }))
+  .filter((el) => {
+ 
+    if (!date1 && !date2) return true; 
+    if (date1 && date2) {
+      return el.dateObj.isAfter(date1, 'day') && el.dateObj.isBefore(date2, 'day');
+    }
+    return true;
+  })
+
+
+const displayedMeetups = inputText || filteredData;
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? "" : id));
@@ -73,8 +72,10 @@ const MeetupsView = () => {
       <Searchbar
         inputText={inputText}
         setInputText={setInputText}
-        date={date}
-        setDate={setDate}
+        date1={date1}
+        setDate1={setDate1}
+        date2={date2}
+        setDate2={setDate2}
       />
       <Grid2
         container

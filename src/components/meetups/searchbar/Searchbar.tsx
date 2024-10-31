@@ -7,18 +7,32 @@ import { Dayjs } from "dayjs";
 interface SearchProps {
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
-  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  date: Dayjs | null;
+  setDate1: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  date1: Dayjs | null;
+  setDate2: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  date2: Dayjs | null;
 }
 
-const Searchbar = ({ inputText, setInputText, date, setDate }: SearchProps) => {
+const Searchbar = ({
+  inputText,
+  setInputText,
+  date1,
+  setDate1,
+  date2,
+  setDate2,
+}: SearchProps) => {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
 
-  const dateHandler = (newDate: Dayjs | null) => {
-    setDate(newDate);
+  const dateHandler1 = (newDate: Dayjs | null) => {
+    setDate1(newDate);
+    console.log(date1);
+  };
+  const dateHandler2 = (newDate: Dayjs | null) => {
+    setDate2(newDate);
+    console.log(date2);
   };
 
   return (
@@ -32,11 +46,8 @@ const Searchbar = ({ inputText, setInputText, date, setDate }: SearchProps) => {
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Filter on date"
-            value={date}
-            onChange={dateHandler}
-          />
+          <DatePicker label="Date" value={date1} onChange={dateHandler1} />
+          <DatePicker label="Date" value={date2} onChange={dateHandler2} />
         </LocalizationProvider>
       </Grid2>
     </>
