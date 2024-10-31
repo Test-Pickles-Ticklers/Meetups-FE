@@ -55,13 +55,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const login = async (userData: AuthenticationRequest): Promise<boolean> => {
     try {
       const response: AuthenticationResponse = await loginUser(userData);
-      console.log("response", response);
 
       const data: User = {
         token: response.token,
         email: response.email,
       };
-      console.log("data", data);
       setUser(data);
 
       localStorage.setItem("user", JSON.stringify(data));

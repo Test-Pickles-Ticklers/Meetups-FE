@@ -97,6 +97,7 @@ const AddMeetupModal = () => {
           </Grid2>
           <Grid2 size={6}>
             <DatePicker
+              openTo={"year"}
               label="Datum"
               value={formData.date ? dayjs(formData.date, "YYYY-MM-DD") : null}
               disablePast
