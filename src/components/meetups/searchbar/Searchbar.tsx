@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Grid2, MenuItem } from "@mui/material";
+import { TextField, Grid2} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
@@ -7,10 +7,10 @@ import { Dayjs } from "dayjs";
 interface SearchProps {
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
-  setDate1: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  date1: Dayjs | null;
-  setDate2: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  date2: Dayjs | null;
+  setDateBefore: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  dateBefore: Dayjs | null;
+  setDateAfter: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  dateAfter: Dayjs | null;
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -18,10 +18,10 @@ interface SearchProps {
 const Searchbar = ({
   inputText,
   setInputText,
-  date1,
-  setDate1,
-  date2,
-  setDate2,
+  dateBefore,
+  setDateBefore,
+  dateAfter,
+  setDateAfter,
   // category,
   // setCategory,
 }: SearchProps) => {
@@ -31,12 +31,12 @@ const Searchbar = ({
   };
 
   const dateHandler1 = (newDate: Dayjs | null) => {
-    setDate1(newDate);
-    console.log(date1);
+    setDateBefore(newDate);
+    console.log(dateBefore);
   };
   const dateHandler2 = (newDate: Dayjs | null) => {
-    setDate2(newDate);
-    console.log(date2);
+    setDateAfter(newDate);
+    console.log(dateAfter);
   };
   
   // const categoryHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,8 +56,8 @@ const Searchbar = ({
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Date" value={date1} onChange={dateHandler1} />
-          <DatePicker label="Date" value={date2} onChange={dateHandler2} />
+          <DatePicker label="Date" value={dateBefore} onChange={dateHandler1} />
+          <DatePicker label="Date" value={dateAfter} onChange={dateHandler2} />
         </LocalizationProvider>
       </Grid2>
     </>
