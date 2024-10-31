@@ -48,7 +48,7 @@ const MeetupsView = () => {
       
       if (!date) return true;
       const diffInDays = Math.abs(el.dateObj.diff(date, 'day'));
-      return diffInDays <= 10;
+      return diffInDays <= 30;
     })
     .sort((a, b) => {
       if (!date) return 0;

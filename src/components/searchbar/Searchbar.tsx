@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TextField, Grid2 } from "@mui/material";
-import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 
@@ -19,7 +19,7 @@ const Searchbar = ({ inputText, setInputText, date, setDate }: SearchProps) => {
 
   const dateHandler = (newDate: Dayjs | null) => {
     setDate(newDate);
-  }
+  };
 
   return (
     <>
@@ -30,10 +30,14 @@ const Searchbar = ({ inputText, setInputText, date, setDate }: SearchProps) => {
           placeholder="Meetups or Location"
           label="Search"
         />
-        
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateField label="Filter on date" value={date} onChange={dateHandler} />
-    </LocalizationProvider>
+          <DatePicker
+            label="Filter on date"
+            value={date}
+            onChange={dateHandler}
+          />
+        </LocalizationProvider>
       </Grid2>
     </>
   );
