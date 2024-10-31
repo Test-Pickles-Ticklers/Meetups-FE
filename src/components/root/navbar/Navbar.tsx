@@ -46,6 +46,13 @@ const Navbar = () => {
     },
   ];
 
+  const handleBreadcrumbClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    navigate(`/${selectedTab}`);
+  };
+
   return (
     <>
       <AppBar
@@ -106,7 +113,7 @@ const Navbar = () => {
         marginTop="6rem"
         padding={2}
       >
-        <Breadcrumbs>
+        <Breadcrumbs onClick={handleBreadcrumbClick}>
           {id ? (
             <Grid2
               direction={"row"}
@@ -116,14 +123,16 @@ const Navbar = () => {
               <Link
                 underline="hover"
                 color="inherit"
-                href={`/${selectedTab}`}
+                sx={{ cursor: "pointer" }}
               >
                 {tabs.find((tab) => tab.value == selectedTab)!.label}
               </Link>
-              <Typography sx={{ color: "text.primary" }}>/ Meetup</Typography>
+              <Typography sx={{ color: "text.primary", cursor: "default" }}>
+                / Meetup
+              </Typography>
             </Grid2>
           ) : (
-            <Typography sx={{ color: "text.primary" }}>
+            <Typography sx={{ color: "text.primary", cursor: "default" }}>
               {tabs.find((tab) => tab.value == selectedTab)!.label}
             </Typography>
           )}
