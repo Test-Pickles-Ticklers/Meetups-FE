@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Grid2, MenuItem, Select, SelectChangeEvent, FormControl, InputLabel } from "@mui/material";
+import { TextField, Grid2, MenuItem, Select, SelectChangeEvent, InputLabel, FormControl } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
@@ -52,6 +52,8 @@ const Searchbar = ({
             onChange={dateHandler}
           />
         </LocalizationProvider>
+        <FormControl>
+        <InputLabel >Category</InputLabel>
         <Select
         labelId="category-label"
           value={category}
@@ -64,23 +66,9 @@ const Searchbar = ({
           <MenuItem value="stök">stök</MenuItem>
           <MenuItem value="chill">chill</MenuItem>
         </Select>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">Age</InputLabel>
-      <Select
-        labelId="demo-select-small-label"
-        id="demo-select-small"
-        value={category}
-        label="Age"
-        onChange={selectHandler}
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-      </Select>
-    </FormControl>
+        </FormControl>
+
+        
       </Grid2>
     </>
   );
