@@ -18,6 +18,7 @@ const useMeetupMutation = (id: string) => {
     setIsLoading(false);
     setMeetup(data);
   };
+
   useEffect(() => {
     getMeetup();
   }, []);
