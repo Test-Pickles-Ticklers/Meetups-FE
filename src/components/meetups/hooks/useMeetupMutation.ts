@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import MeetupModel from '../../../api/meetups/models/MeetupModel';
+import { useEffect, useState } from "react";
 import {
   getMeetupById,
   signupToMeetup,
-} from '../../../api/meetups/apiMeetupCalls';
+} from "../../../api/meetups/apiMeetupCalls";
+import MeetupModel from "../../../api/models/MeetupModel";
 
 const useMeetupMutation = (id: string) => {
   const [meetup, setMeetup] = useState<MeetupModel>();

@@ -11,7 +11,6 @@ export const registerUser = async (
       "/user/signup",
       data
     );
-    console.log("response.data", response.data);
     return response.data;
   } catch (error: any) {
     throw error;
