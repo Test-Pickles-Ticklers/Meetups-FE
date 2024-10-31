@@ -23,38 +23,61 @@ const MeetupsView = () => {
     useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
-  const filterOnText = upcomingMeetups
-    .filter((el) => {
-      const textMatch =
-        inputText === "" ||
-        el.title.toLowerCase().includes(inputText.toLowerCase()) ||
-        el.location.toLowerCase().includes(inputText.toLowerCase())
+  // const filterOnText = upcomingMeetups
+  //   .filter((el) => {
+  //     const textMatch =
+  //       inputText === "" ||
+  //       el.title.toLowerCase().includes(inputText.toLowerCase()) ||
+  //       el.location.toLowerCase().includes(inputText.toLowerCase())
 
-      return textMatch;
-    })
+  //     return textMatch;
+  //   })
 
-    const filterOnDate = upcomingMeetups
-      .map((el) => ({
-        ...el,
-        dateObj: dayjs(el.date),
-    }))
-    .filter((el) => {
-      if(!date1 && !date2) return true;
-      if(date1 && date2){
-        return el.dateObj.isAfter(date1, "day") && el.dateObj.isBefore(date2, "day")
-      }
-      return true;
-    })
+  //   const filterOnDate = upcomingMeetups
+  //     .map((el) => ({
+  //       ...el,
+  //       dateObj: dayjs(el.date),
+  //   }))
+  //   .filter((el) => {
+  //     if(!date1 && !date2) return true;
+  //     if(date1 && date2){
+  //       return el.dateObj.isAfter(date1, "day") && el.dateObj.isBefore(date2, "day")
+  //     }
+  //     return true;
+  //   })
 
-    const filterOnCategory = upcomingMeetups
-    .filter((el) => {
-      if(category === ""){
-        return el
-      }
-      return el.category === "" || el.category === category.toLowerCase();
-    });
+  //   const filterOnCategory = upcomingMeetups
+  //   .filter((el) => {
+  //     if(category === ""){
+  //       return el
+  //     }
+  //     return el.category === "" || el.category === category.toLowerCase();
+  //   });
 
-  const displayedMeetups = date1 && date2 ? filterOnDate : filterOnText
+  // const displayedMeetups = date1 && date2 ? filterOnDate : filterOnText
+  const displayedMeetups = upcomingMeetups
+  .map((el) => ({
+    ...el,
+    dateObj: dayjs(el.date), // Convert date once for reusability
+  }))
+  .filter((el) => {
+    // Text filter
+    const textMatch =
+      inputText === "" ||
+      el.title.toLowerCase().includes(inputText.toLowerCase()) ||
+      el.location.toLowerCase().includes(inputText.toLowerCase());
+
+    // Date filter
+    const dateMatch =
+      (!date1 && !date2) ||
+      (date1 && date2 && el.dateObj.isAfter(date1, "day") && el.dateObj.isBefore(date2, "day"));
+
+    // Category filter
+    const categoryMatch = category === "" || el.category.toLowerCase() === category.toLowerCase();
+
+    // Return true only if all conditions match
+    return textMatch && dateMatch && categoryMatch;
+  });
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? "" : id));
