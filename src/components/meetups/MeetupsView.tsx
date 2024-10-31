@@ -4,7 +4,7 @@ import {
   unattendToMeetup,
 } from "../../api/meetups/apiMeetupCalls";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
-import { Grid2, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import { useUserContext } from "../../context/UserContext";
 import useMeetups from "./hooks/useMeetups";
 import dayjs, { Dayjs } from "dayjs";
@@ -14,8 +14,8 @@ import ReviewModal from "./reviewModal/ReviewModal";
 
 const MeetupsView = () => {
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>("");
-  const [date1, setDate1] = useState<Dayjs | null>(null);
-  const [date2, setDate2] = useState<Dayjs | null>(null);
+  const [dateBefore, setDateBefore] = useState<Dayjs | null>(null);
+  const [dateAfter, setDateAfter] = useState<Dayjs | null>(null);
   const [category, setCategory] = useState("");
   const { user } = useUserContext();
   const [inputText, setInputText] = useState("");
@@ -35,11 +35,11 @@ const MeetupsView = () => {
         el.location.toLowerCase().includes(inputText.toLowerCase());
 
       const dateMatch =
-        (!date1 && !date2) ||
-        (date1 &&
-          date2 &&
-          el.dateObj.isAfter(date1, "day") &&
-          el.dateObj.isBefore(date2, "day"));
+        (!dateBefore && !dateAfter) ||
+        (dateBefore &&
+          dateAfter &&
+          el.dateObj.isAfter(dateBefore, "day") &&
+          el.dateObj.isBefore(dateAfter, "day"));
 
       const categoryMatch =
         category === "" || el.category.toLowerCase() === category.toLowerCase();
@@ -73,10 +73,10 @@ const MeetupsView = () => {
           <Searchbar
             inputText={inputText}
             setInputText={setInputText}
-            date1={date1}
-            setDate1={setDate1}
-            date2={date2}
-            setDate2={setDate2}
+            dateBefore={dateBefore}
+            setDateBefore={setDateBefore}
+            dateAfter={dateAfter}
+            setDateAfter={setDateAfter}
             category={category}
             setCategory={setCategory}
           />
