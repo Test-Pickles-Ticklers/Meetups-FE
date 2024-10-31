@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Grid2 } from "@mui/material";
+import { TextField, Grid2, MenuItem } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
@@ -11,6 +11,8 @@ interface SearchProps {
   date1: Dayjs | null;
   setDate2: React.Dispatch<React.SetStateAction<Dayjs | null>>;
   date2: Dayjs | null;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Searchbar = ({
@@ -20,6 +22,8 @@ const Searchbar = ({
   setDate1,
   date2,
   setDate2,
+  // category,
+  // setCategory,
 }: SearchProps) => {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -34,6 +38,12 @@ const Searchbar = ({
     setDate2(newDate);
     console.log(date2);
   };
+  
+  // const categoryHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setCategory(e.target.value);
+  //   console.log(category);
+  // }
+
 
   return (
     <>

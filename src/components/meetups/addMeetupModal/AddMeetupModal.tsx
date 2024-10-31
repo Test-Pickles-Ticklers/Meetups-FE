@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DialogModal from "../../common/DialogModal";
-import { Button, Grid2, TextField } from "@mui/material";
+import { Button, Grid2, MenuItem, TextField } from "@mui/material";
 import useMeetups from "../hooks/useMeetups";
 import AddMeetupRequest from "../../../api/meetups/models/AddMeetupRequest";
 import {
@@ -17,6 +17,7 @@ const initialData: AddMeetupRequest = {
   time: "",
   location: "",
   maxParticipants: 10,
+  category: "",
 };
 
 const AddMeetupModal = () => {

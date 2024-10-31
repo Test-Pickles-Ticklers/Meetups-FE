@@ -4,6 +4,7 @@ interface AddMeetupRequest {
   time: string;
   location: string;
   maxParticipants: number;
+  category: string;
 }
 
 export default AddMeetupRequest;
