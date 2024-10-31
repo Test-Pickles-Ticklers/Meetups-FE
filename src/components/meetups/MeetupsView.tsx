@@ -1,34 +1,42 @@
 import { useEffect, useState } from "react";
 import { getAllMeetups } from "../../api/meetups/apiMeetupCalls";
-import MeetupModel from "../../api/meetups/models/MeetupModel";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
 import { Grid2 } from "@mui/material";
 import MeetupCard from "./meetupCard/MeetupCard";
+import Searchbar from "../searchbar/Searchbar";
+import useMeetups from "./hooks/useMeetups";
 
 const MeetupsView = () => {
-  const [data, setData] = useState<MeetupModel[]>([]);
+  //const [data, setData] = useState<MeetupModel[]>([]);
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>("");
+  const [inputText, setInputText] = useState("")
+  const { meetups } = useMeetups();
 
-  const fetchData = async () => {
-    try {
-      const response = await getAllMeetups();
-      console.log("Meetups data:", response);
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await getAllMeetups();
+  //     console.log("Meetups data:", response);
 
-      setData(response);
-    } catch (error: any) {
-      console.error("Error fetching meetups:", error.message || error);
+  //     setData(response);
+  //   } catch (error: any) {
+  //     console.error("Error fetching meetups:", error.message || error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  const filteredData = meetups.length ? meetups.filter((el) => {
+    if (inputText === "") {
+      return el;
+    } else {
+      return (
+        el.title.toLowerCase().includes(inputText) ||
+        el.location.toLowerCase().includes(inputText)
+      );
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }) : [];
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? "" : id));
@@ -39,14 +47,15 @@ const MeetupsView = () => {
   return (
     <>
       <AddMeetupModal />
+      <Searchbar inputText={inputText} setInputText={setInputText} />
       <Grid2
         container
         spacing={2}
         direction={"column"}
         alignItems={"center"}
       >
-        {data.length > 0 ? (
-          data.map((meetup) => {
+        {filteredData.length > 0 ? (
+          filteredData.map((meetup) => {
             return (
               <Grid2
                 size={6}
