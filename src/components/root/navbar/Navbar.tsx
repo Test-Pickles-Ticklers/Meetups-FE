@@ -1,16 +1,28 @@
-import { AppBar, Box, Button, Grid2, Tab, Tabs, useTheme } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Breadcrumbs,
+  Button,
+  Grid2,
+  SelectProps,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Login from "../../auth/Login";
 import { useUserContext } from "../../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, SyntheticEvent, useContext } from "react";
 import ContrastIcon from "@mui/icons-material/Contrast";
-import { ThemeMode } from "../../../themes/types/theme";
 import { ThemeContext } from "../../../themes/themeCustomization";
+import Link from "@mui/material/Link";
 
 const Navbar = () => {
   const { user, logout } = useUserContext();
   const navigate = useNavigate();
   const theme = useTheme();
+  const { id } = useParams();
 
   const [selectedTab, setSelectedTab] = useState<string>("meetups");
 
@@ -23,63 +35,101 @@ const Navbar = () => {
     themeMode.toggleThemeMode();
   };
 
+  const tabs: SelectProps[] = [
+    {
+      label: "Meetups",
+      value: "meetups",
+    },
+    {
+      label: "Min Profil",
+      value: "user",
+    },
+  ];
+
   return (
-    <AppBar
-      sx={{ bgcolor: theme.palette.background.paper }}
-      position="fixed"
-    >
-      <Grid2
-        container
-        height="6rem"
-        alignItems="center"
-        justifyContent="space-between"
-        padding={2}
+    <>
+      <AppBar
+        sx={{ bgcolor: theme.palette.background.paper }}
+        position="fixed"
       >
-        <Box sx={{ flexGrow: 1 }}>
-          {user ? (
-            <Tabs
-              value={selectedTab}
-              onChange={handleTabChange}
-              textColor="inherit"
-              indicatorColor="primary"
-            >
-              <Tab
-                label="Meetups"
-                value="meetups"
-              />
-              <Tab
-                label="Min Profil"
-                value="user"
-              />
-            </Tabs>
-          ) : null}
-        </Box>
         <Grid2
           container
-          spacing={1}
+          height="6rem"
+          alignItems="center"
+          justifyContent="space-between"
+          padding={2}
         >
-          <Button
-            variant="text"
-            onClick={toggleThemeMode}
+          <Box sx={{ flexGrow: 1 }}>
+            {user ? (
+              <Tabs
+                value={selectedTab}
+                onChange={handleTabChange}
+                textColor="inherit"
+                indicatorColor="primary"
+              >
+                {tabs.map((tab) => (
+                  <Tab
+                    label={tab.label}
+                    value={tab.value}
+                  />
+                ))}
+              </Tabs>
+            ) : null}
+          </Box>
+          <Grid2
+            container
+            spacing={1}
           >
-            <ContrastIcon />
-          </Button>
-          {!user ? (
-            <Login />
-          ) : (
             <Button
-              onClick={() => {
-                setSelectedTab("meetups");
-                logout();
-              }}
-              variant="contained"
+              variant="text"
+              onClick={toggleThemeMode}
             >
-              Logga ut
+              <ContrastIcon />
             </Button>
-          )}
+            {!user ? (
+              <Login />
+            ) : (
+              <Button
+                onClick={() => {
+                  setSelectedTab("meetups");
+                  logout();
+                }}
+                variant="contained"
+              >
+                Logga ut
+              </Button>
+            )}
+          </Grid2>
         </Grid2>
+      </AppBar>
+      <Grid2
+        marginTop="6rem"
+        padding={2}
+      >
+        <Breadcrumbs>
+          {id ? (
+            <Grid2
+              direction={"row"}
+              container
+              spacing={1}
+            >
+              <Link
+                underline="hover"
+                color="inherit"
+                href={`/${selectedTab}`}
+              >
+                {tabs.find((tab) => tab.value == selectedTab)!.label}
+              </Link>
+              <Typography sx={{ color: "text.primary" }}>/ Meetup</Typography>
+            </Grid2>
+          ) : (
+            <Typography sx={{ color: "text.primary" }}>
+              {tabs.find((tab) => tab.value == selectedTab)!.label}
+            </Typography>
+          )}
+        </Breadcrumbs>
       </Grid2>
-    </AppBar>
+    </>
   );
 };
 export default Navbar;
