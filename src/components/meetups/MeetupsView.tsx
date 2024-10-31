@@ -11,25 +11,41 @@ import MeetupCard from './meetupCard/MeetupCard';
 import { useUserContext } from '../../context/UserContext';
 import Searchbar from '../searchbar/Searchbar';
 import useMeetups from './hooks/useMeetups';
+import dayjs, { Dayjs } from "dayjs";
 
 const MeetupsView = () => {
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>('');
+  const [date, setDate] = useState<Dayjs | null>(null);
   const { user } = useUserContext();
   const [inputText, setInputText] = useState('');
   const { meetups, getMeetups } = useMeetups();
 
-  const filteredData = meetups.length
-    ? meetups.filter((el) => {
-        if (inputText === '') {
-          return el;
-        } else {
-          return (
-            el.title.toLowerCase().includes(inputText) ||
-            el.location.toLowerCase().includes(inputText)
-          );
-        }
-      })
-    : [];
+  const filteredData = meetups
+    .filter((el) => {
+      return (
+        inputText === "" ||
+        el.title.toLowerCase().includes(inputText) ||
+        el.location.toLowerCase().includes(inputText)
+      );
+    })
+    .map((el) => ({
+      ...el,
+      dateObj: dayjs(el.date), 
+    }))
+    .filter((el) => {
+      
+      if (!date) return true;
+      const diffInDays = Math.abs(el.dateObj.diff(date, 'day'));
+      return diffInDays <= 30;
+    })
+    .sort((a, b) => {
+      if (!date) return 0;
+      const aDiff = Math.abs(a.dateObj.diff(date));
+      const bDiff = Math.abs(b.dateObj.diff(date));
+      return aDiff - bDiff; 
+    });
+
+    const displayedMeetups = inputText || date ? filteredData.slice(0, 10) : filteredData;
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? '' : id));
@@ -48,10 +64,10 @@ const MeetupsView = () => {
   return (
     <>
       <AddMeetupModal />
-      <Searchbar inputText={inputText} setInputText={setInputText} />
+      <Searchbar inputText={inputText} setInputText={setInputText} date={date} setDate={setDate} />
       <Grid2 container spacing={2} direction={'column'} alignItems={'center'}>
-        {filteredData.length > 0 ? (
-          filteredData.map((meetup) => {
+        {displayedMeetups.length > 0 ? (
+          displayedMeetups.map((meetup) => {
             return (
               <Grid2 size={6} p={1}>
                 <MeetupCard
