@@ -17,7 +17,9 @@ interface MeetupCardProps {
   toggleExpand: (id: string) => void;
   isParticipant: boolean;
   joinButtonDisabled: boolean;
+  canPutReview?: boolean;
   canDelete?: boolean;
+  handleReviewClick?: () => void;
 }
 
 const MeetupCard = ({
@@ -28,6 +30,8 @@ const MeetupCard = ({
   expandedId,
   toggleExpand,
   canDelete,
+  canPutReview,
+  handleReviewClick,
 }: MeetupCardProps) => {
   const theme = useTheme();
   return (
@@ -59,18 +63,26 @@ const MeetupCard = ({
             >
               bajskuk
             </Typography>
-
-            <Button
-              onClick={handleButtonClick}
-              disabled={joinButtonDisabled}
-              variant="contained"
-            >
-              {canDelete
-                ? "Ta bort meetup"
-                : isParticipant
-                ? "Avanmäl"
-                : "Gå med"}
-            </Button>
+            {canPutReview && handleReviewClick ? (
+              <Button
+                onClick={handleReviewClick}
+                variant="contained"
+              >
+                Recensera
+              </Button>
+            ) : (
+              <Button
+                onClick={handleButtonClick}
+                disabled={joinButtonDisabled}
+                variant="contained"
+              >
+                {canDelete
+                  ? "Ta bort meetup"
+                  : isParticipant
+                  ? "Avanmäl"
+                  : "Gå med"}
+              </Button>
+            )}
           </Box>
         )}
       </CardContent>
