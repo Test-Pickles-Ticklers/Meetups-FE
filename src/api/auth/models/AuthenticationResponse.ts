@@ -1,5 +1,5 @@
 interface AuthenticationResponse {
-  success: boolean;
+  email: string;
   token: string;
 }
 export default AuthenticationResponse;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllMeetups } from "../../api/meetups/apiMeetupCalls";
+import MeetupModel from "../../api/meetups/models/MeetupModel";
 import AddMeetupModal from "./addMeetupModal/AddMeetupModal";
 import { Grid2 } from "@mui/material";
 import MeetupCard from "./meetupCard/MeetupCard";
@@ -12,10 +13,12 @@ const MeetupsView = () => {
   const [inputText, setInputText] = useState("")
   const { meetups } = useMeetups();
 
+
   // const fetchData = async () => {
   //   try {
   //     const response = await getAllMeetups();
   //     console.log("Meetups data:", response);
+
 
   //     setData(response);
   //   } catch (error: any) {
@@ -60,6 +63,7 @@ const MeetupsView = () => {
               <Grid2
                 size={6}
                 p={1}
+                key={meetup._id}
               >
                 <MeetupCard
                   meetup={meetup}
