@@ -42,6 +42,7 @@ const ViewEditTextField = ({
         disabled={!isEdit}
         slotProps={{ inputLabel: { shrink: true } }}
         required={isRequired}
+        fullWidth
       />
     </FormControl>
   );

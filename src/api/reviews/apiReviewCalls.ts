@@ -16,3 +16,15 @@ export const addReview = async (
     throw error;
   }
 };
+
+export const getReviews = async (meetupsId: string) => {
+  try {
+    const response = await axiosInstance.get<ReviewModel[]>(
+      `/review/${meetupsId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

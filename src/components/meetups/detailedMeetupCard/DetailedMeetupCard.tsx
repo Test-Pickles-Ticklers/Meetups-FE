@@ -1,14 +1,12 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import MeetupModel from "../../../api/models/MeetupModel";
 import {
   Card,
   CardContent,
-  CardHeader,
   Divider,
   Grid2,
   IconButton,
   Stack,
-  Typography,
 } from "@mui/material";
 import { useUserContext } from "../../../context/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,6 +18,7 @@ import ViewEditTextField from "../../common/viewEditInput/viewEditTextField";
 import ViewEditNumberField from "../../common/viewEditInput/viewEditNumberField";
 import ViewEditSelectField from "../../common/viewEditInput/viewEditSelectField";
 import MeetupCategories from "../../../api/models/MeetupCategories";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface DetailedMeetupCardProps {
   meetup: MeetupModel;
@@ -28,6 +27,7 @@ interface DetailedMeetupCardProps {
   isEdit: boolean;
   handleEditClick: () => void;
   handleCancelClick: () => void;
+  handleDeleteClick: () => void;
 }
 
 export interface EditMeetupModel {
@@ -42,6 +42,7 @@ const DetailedMeetupCard = ({
   setEditMeetup,
   handleEditClick,
   handleCancelClick,
+  handleDeleteClick,
 }: DetailedMeetupCardProps) => {
   const { user } = useUserContext();
   return (
@@ -53,7 +54,17 @@ const DetailedMeetupCard = ({
           rowGap={2}
         >
           <Grid2 size={10}>
-            <Typography variant="h5">{meetup.organizer}</Typography>
+            <ViewEditTextField
+              isEdit={isEdit}
+              handleChange={(value: string) =>
+                setEditMeetup((prev) => ({
+                  ...prev!,
+                  meetup: { ...prev!.meetup!, title: value },
+                }))
+              }
+              label={"Titel"}
+              value={editMeetup ? editMeetup.meetup!.title : meetup.title}
+            />
           </Grid2>
           <Grid2
             size={2}
@@ -66,6 +77,9 @@ const DetailedMeetupCard = ({
                   <Grid2>
                     <IconButton onClick={handleEditClick}>
                       <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={handleDeleteClick}>
+                      <DeleteForeverIcon />
                     </IconButton>
                   </Grid2>
                 ) : (

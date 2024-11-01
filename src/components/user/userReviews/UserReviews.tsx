@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReviewModel from "../../../api/models/ReviewModel";
 import { Box, Card, Grid2, Typography, useTheme } from "@mui/material";
 import { getUserReview } from "../../../api/user/apiUserCalls";
-import ReviewCard from "./reviewCard/ReviewCard";
+import ReviewCard from "../../common/reviewCard/ReviewCard";
 
 const UserReviews = () => {
   const theme = useTheme();
@@ -35,17 +35,18 @@ const UserReviews = () => {
           variant="h5"
           width="100%"
         >
-          Reviews
+          Recensioner
         </Typography>
         {data.length > 0 ? (
           data.map((review) => (
             <ReviewCard
               key={review._id}
               review={review}
+              isEdit={false}
             />
           ))
         ) : (
-          <p>No reviews available.</p>
+          <p>Inga recensioner tillgängliga.</p>
         )}
       </Grid2>
     </Box>
