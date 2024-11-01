@@ -110,7 +110,7 @@ const MeetupView = () => {
               }
               disabled={
                 !eligableToParticipate ||
-                meetup!.participants.length >= meetup!.maxParticipants
+                (meetup && meetup.participants.length >= meetup.maxParticipants)
               }
               variant="contained"
             >
