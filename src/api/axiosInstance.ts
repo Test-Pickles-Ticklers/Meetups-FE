@@ -1,18 +1,5 @@
 import axios from "axios";
 
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    Promise.reject(error);
-  }
-);
-
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
@@ -20,5 +7,23 @@ const axiosInstance = axios.create({
   },
   withCredentials: true,
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      const token = JSON.parse(user).token;
+
+      if (token) {
+        config.headers["authorization"] = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  }
+);
 
 export default axiosInstance;

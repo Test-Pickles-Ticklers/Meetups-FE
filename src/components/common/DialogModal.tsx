@@ -51,18 +51,23 @@ const DialogModal: React.FC<DialogModalProps> = ({
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Grid2
+          container
           columnSpacing={4}
+          justifyContent="flex-end"
           padding={2}
-          width={"100%"}
-          alignItems={"flex-end"}
+          width="100%"
         >
-          <Button onClick={handleCancel}>Avbryt</Button>
-          <Button
-            onClick={handleSubmit}
-            variant={"contained"}
-          >
-            Bekräfta
-          </Button>
+          <Grid2>
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+            >
+              Bekräfta
+            </Button>
+          </Grid2>
+          <Grid2>
+            <Button onClick={handleCancel}>Avbryt</Button>
+          </Grid2>
         </Grid2>
       </DialogActions>
     </Dialog>

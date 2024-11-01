@@ -1,17 +1,17 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/Routes";
-import { SnackbarProvider } from "notistack";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme/theme";
-import "typeface-roboto";
+import Provider from "./providers/Provider";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={4}>
+    <Provider>
+      <div
+        className="App"
+        style={{ display: "grid" }}
+      >
         <RouterProvider router={router} />
-      </SnackbarProvider>
-    </ThemeProvider>
+      </div>
+    </Provider>
   );
 }
 
