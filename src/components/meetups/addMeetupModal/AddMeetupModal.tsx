@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DialogModal from "../../common/DialogModal";
-import { Button, Grid2, MenuItem, TextField } from "@mui/material";
+import { Button, Grid2 } from "@mui/material";
 import useMeetups from "../hooks/useMeetups";
 import AddMeetupRequest from "../../../api/meetups/models/AddMeetupRequest";
-import {
-  DatePicker,
-  renderTimeViewClock,
-  TimePicker,
-} from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+
 import { enqueueSnackbar } from "notistack";
 import DetailedMeetupCard, {
   EditMeetupModel,
@@ -16,7 +11,11 @@ import DetailedMeetupCard, {
 import MeetupModel from "../../../api/models/MeetupModel";
 import { useUserContext } from "../../../context/UserContext";
 
-const AddMeetupModal = () => {
+interface AddMeetupModalProps {
+  addedModalTrigger: () => void;
+}
+
+const AddMeetupModal = ({ addedModalTrigger }: AddMeetupModalProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const { meetupAdded } = useMeetups();
   const { user } = useUserContext();
@@ -28,6 +27,7 @@ const AddMeetupModal = () => {
     if (success) {
       setOpen(!open);
       enqueueSnackbar("Meetup added!", { variant: "info" });
+      addedModalTrigger();
     }
   };
 
@@ -55,8 +55,17 @@ const AddMeetupModal = () => {
   };
 
   return (
-    <>
-      <Button onClick={onOpenClick}>Lägg till meetup</Button>
+    <Grid2
+      size={10}
+      container
+      justifyContent={"flex-end"}
+    >
+      <Button
+        onClick={onOpenClick}
+        variant="contained"
+      >
+        Lägg till meetup
+      </Button>
       <DialogModal
         isOpen={open}
         title={"Lägg till ny meetup"}
@@ -64,6 +73,7 @@ const AddMeetupModal = () => {
         handleCancel={handleCancel}
       >
         <DetailedMeetupCard
+          handleDeleteClick={handleCancel}
           meetup={initialData}
           editMeetup={editMeetup}
           setEditMeetup={setEditMeetup}
@@ -72,7 +82,7 @@ const AddMeetupModal = () => {
           handleCancelClick={handleCancel}
         />
       </DialogModal>
-    </>
+    </Grid2>
   );
 };
 

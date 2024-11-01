@@ -113,30 +113,32 @@ const Navbar = () => {
         marginTop="6rem"
         padding={2}
       >
-        <Breadcrumbs onClick={handleBreadcrumbClick}>
-          {id ? (
-            <Grid2
-              direction={"row"}
-              container
-              spacing={1}
-            >
-              <Link
-                underline="hover"
-                color="inherit"
-                sx={{ cursor: "pointer" }}
+        {!!user && (
+          <Breadcrumbs onClick={handleBreadcrumbClick}>
+            {id ? (
+              <Grid2
+                direction={"row"}
+                container
+                spacing={1}
               >
-                {tabs.find((tab) => tab.value == selectedTab)!.label}
-              </Link>
+                <Link
+                  underline="hover"
+                  color="inherit"
+                  sx={{ cursor: "pointer" }}
+                >
+                  {tabs.find((tab) => tab.value == selectedTab)!.label}
+                </Link>
+                <Typography sx={{ color: "text.primary", cursor: "default" }}>
+                  / Meetup
+                </Typography>
+              </Grid2>
+            ) : (
               <Typography sx={{ color: "text.primary", cursor: "default" }}>
-                / Meetup
+                {tabs.find((tab) => tab.value == selectedTab)!.label}
               </Typography>
-            </Grid2>
-          ) : (
-            <Typography sx={{ color: "text.primary", cursor: "default" }}>
-              {tabs.find((tab) => tab.value == selectedTab)!.label}
-            </Typography>
-          )}
-        </Breadcrumbs>
+            )}
+          </Breadcrumbs>
+        )}
       </Grid2>
     </>
   );

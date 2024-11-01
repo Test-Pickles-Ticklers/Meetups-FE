@@ -6,6 +6,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
+  Button,
+  IconButton,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -17,9 +20,9 @@ interface SearchProps {
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   setDateBefore: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  dateBefore: Dayjs | null;
+  fromDate: Dayjs | null;
   setDateAfter: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  dateAfter: Dayjs | null;
+  toDate: Dayjs | null;
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -27,9 +30,9 @@ interface SearchProps {
 const Searchbar = ({
   inputText,
   setInputText,
-  dateBefore,
+  fromDate,
   setDateBefore,
-  dateAfter,
+  toDate,
   setDateAfter,
   category,
   setCategory,
@@ -41,49 +44,79 @@ const Searchbar = ({
 
   const dateHandler1 = (newDate: Dayjs | null) => {
     setDateBefore(newDate);
-    console.log(dateBefore);
   };
   const dateHandler2 = (newDate: Dayjs | null) => {
     setDateAfter(newDate);
-    console.log(dateAfter);
   };
 
-  const categoryHandler = (e: any):void => {
+  const categoryHandler = (e: any): void => {
     setCategory(e.target.value);
-    console.log(category);
   };
 
   return (
-    <>
-      <Grid2 container spacing={2}>
+    <Grid2
+      container
+      spacing={2}
+    >
+      <Grid2 size={8}>
+        <Typography variant="h4">Filtrera kommande meetups</Typography>
+      </Grid2>
+
+      <Grid2 size={5}>
         <TextField
           value={inputText}
           onChange={inputHandler}
-          placeholder="Meetups or Location"
-          label="Search"
-          />
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Date" value={dateBefore} onChange={dateHandler1} />
-          <DatePicker label="Date" value={dateAfter} onChange={dateHandler2} />
-        </LocalizationProvider>
-          <FormControl>
-          <InputLabel>Category</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="category-label"
-            value={category}
-            label="Category"
-            onChange={categoryHandler}
-          >
-            <MenuItem value=""><em>None</em></MenuItem>
-            {MeetupCategories.map((option) => (
-              <MenuItem value={option}>{option}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          type="search"
+          fullWidth
+          placeholder="Meetup eller plats"
+          label="Sök"
+        />
       </Grid2>
-    </>
+      <Grid2 size={5}>
+        <TextField
+          select
+          fullWidth
+          label="Kategori"
+          value={category}
+          onChange={categoryHandler}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {MeetupCategories.map((option) => (
+            <MenuItem value={option}>{option}</MenuItem>
+          ))}
+        </TextField>
+      </Grid2>
+      <Grid2 size={5}>
+        <DatePicker
+          openTo="year"
+          views={["year", "month", "day"]}
+          label="Från datum"
+          value={fromDate}
+          onChange={dateHandler1}
+          slotProps={{
+            textField: { fullWidth: true },
+            field: { clearable: true, onClear: () => dateHandler1(null) },
+          }}
+          maxDate={toDate || undefined}
+        />
+      </Grid2>
+      <Grid2 size={5}>
+        <DatePicker
+          openTo="year"
+          views={["year", "month", "day"]}
+          label="Till datum"
+          value={toDate}
+          onChange={dateHandler2}
+          slotProps={{
+            textField: { fullWidth: true },
+            field: { clearable: true, onClear: () => dateHandler2(null) },
+          }}
+          minDate={fromDate || undefined}
+        />
+      </Grid2>
+    </Grid2>
   );
 };
 
