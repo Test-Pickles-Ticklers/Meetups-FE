@@ -1,8 +1,17 @@
 import * as React from "react";
-import { TextField, Grid2} from "@mui/material";
+import {
+  TextField,
+  Grid2,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
+import MeetupCategories from "../../../api/models/MeetupCategories";
+import ViewEditSelectField from "../../common/viewEditInput/viewEditSelectField";
 
 interface SearchProps {
   inputText: string;
@@ -22,8 +31,8 @@ const Searchbar = ({
   setDateBefore,
   dateAfter,
   setDateAfter,
-  // category,
-  // setCategory,
+  category,
+  setCategory,
 }: SearchProps) => {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -38,12 +47,11 @@ const Searchbar = ({
     setDateAfter(newDate);
     console.log(dateAfter);
   };
-  
-  // const categoryHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   setCategory(e.target.value);
-  //   console.log(category);
-  // }
 
+  const categoryHandler = (e: any):void => {
+    setCategory(e.target.value);
+    console.log(category);
+  };
 
   return (
     <>
@@ -53,12 +61,27 @@ const Searchbar = ({
           onChange={inputHandler}
           placeholder="Meetups or Location"
           label="Search"
-        />
+          />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker label="Date" value={dateBefore} onChange={dateHandler1} />
           <DatePicker label="Date" value={dateAfter} onChange={dateHandler2} />
         </LocalizationProvider>
+          <FormControl>
+          <InputLabel>Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="category-label"
+            value={category}
+            label="Category"
+            onChange={categoryHandler}
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            {MeetupCategories.map((option) => (
+              <MenuItem value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid2>
     </>
   );

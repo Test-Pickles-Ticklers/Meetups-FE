@@ -11,6 +11,7 @@ import dayjs, { Dayjs } from "dayjs";
 import MeetupCard from "../common/meetupCard/MeetupCard";
 import Searchbar from "./searchbar/Searchbar";
 import ReviewModal from "./reviewModal/ReviewModal";
+import { SearchFilters } from "./searchbar/Searchfilters";
 
 const MeetupsView = () => {
   const [expandedMeetupId, setExpandedMeetupId] = useState<string>("");
@@ -23,29 +24,7 @@ const MeetupsView = () => {
     useMeetups();
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
 
-  const displayedMeetups = upcomingMeetups
-    .map((el) => ({
-      ...el,
-      dateObj: dayjs(el.date),
-    }))
-    .filter((el) => {
-      const textMatch =
-        inputText === "" ||
-        el.title.toLowerCase().includes(inputText.toLowerCase()) ||
-        el.location.toLowerCase().includes(inputText.toLowerCase());
-
-      const dateMatch =
-        (!dateBefore && !dateAfter) ||
-        (dateBefore &&
-          dateAfter &&
-          el.dateObj.isAfter(dateBefore, "day") &&
-          el.dateObj.isBefore(dateAfter, "day"));
-
-      const categoryMatch =
-        category === "" || el.category.toLowerCase() === category.toLowerCase();
-
-      return textMatch && dateMatch && categoryMatch;
-    });
+  const displayedMeetups = SearchFilters(upcomingMeetups, inputText, dateBefore, dateAfter, category)
 
   const toggleExpand = (id: string) => {
     setExpandedMeetupId((prevId) => (prevId === id ? "" : id));
