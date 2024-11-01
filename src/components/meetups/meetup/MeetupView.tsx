@@ -108,7 +108,10 @@ const MeetupView = () => {
               onClick={
                 participated ? unparticipateInMeetup : participateInMeetup
               }
-              disabled={!eligableToParticipate}
+              disabled={
+                !eligableToParticipate ||
+                meetup!.participants.length >= meetup!.maxParticipants
+              }
               variant="contained"
             >
               {participated
